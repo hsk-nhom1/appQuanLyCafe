@@ -66,6 +66,9 @@ public class DiaChi {
 	public DiaChi(String maDiaChi) {
 		super();
 		this.maDiaChi = maDiaChi;
+		this.xa = "khong";
+		this.huyen = "khong";
+		this.tinh = "khong";
 	}
 	@Override
 	public String toString() {

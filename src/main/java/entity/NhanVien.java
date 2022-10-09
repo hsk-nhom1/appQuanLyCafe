@@ -7,7 +7,7 @@ public class NhanVien {
 	private String email;
 	private String gioiTinh;
 	private String cmnd;
-	private String caTruc;
+	private int caTruc;
 	private TaiKhoan taiKhoan;
 	private DiaChi diaChi;
 	private double luong;
@@ -47,10 +47,10 @@ public class NhanVien {
 	public void setCmnd(String cmnd) {
 		this.cmnd = cmnd;
 	}
-	public String getCaTruc() {
+	public int getCaTruc() {
 		return caTruc;
 	}
-	public void setCaTruc(String caTruc) {
+	public void setCaTruc(int caTruc) {
 		this.caTruc = caTruc;
 	}
 	public TaiKhoan getTaiKhoan() {
@@ -94,7 +94,7 @@ public class NhanVien {
 			return false;
 		return true;
 	}
-	public NhanVien(String maNV, String tenNV, String sdt, String email, String gioiTinh, String cmnd, String caTruc,
+	public NhanVien(String maNV, String tenNV, String sdt, String email, String gioiTinh, String cmnd, int caTruc,
 			TaiKhoan taiKhoan, DiaChi diaChi, double luong) {
 		super();
 		this.maNV = maNV;
