@@ -14,8 +14,8 @@ import util.RoundedBorderWithColor;
 public class Menu extends JFrame {
 	private JPanel pnMain;
 	private JPanel pnMenuJPanel;
-	private JButton btnTrangChu, btnSanPham, btnQLBan, btnNhanVien, btnHoaDon;
-	private JLabel lblIconUser, lblIconLogOut, lblTenUser, lblLogOut;
+	private JButton btnTrangChu, btnSanPham, btnQLBan, btnNhanVien, btnHoaDon, btnLogOut;
+	private JLabel lblIconUser, lblIconLogOut, lblTenUser;
 
 	public Menu() {
 		setTitle("Thanh Menu");
@@ -53,7 +53,7 @@ public class Menu extends JFrame {
 		btnSanPham.setHorizontalAlignment(JButton.CENTER);
 		btnSanPham.setBounds(200, 25, 128, 35);
 		btnSanPham.setIcon(new ImageIcon(
-		        new ImageIcon("public/icon/cfMenu.png").getImage().getScaledInstance(30, 30,
+		        new ImageIcon("public/icon/product.png").getImage().getScaledInstance(30, 30,
 		                Image.SCALE_SMOOTH)));
 		btnSanPham.setBorder(new RoundedBorderWithColor(Color.decode("#1D81CE"), 1, 10));				
 
@@ -99,9 +99,10 @@ public class Menu extends JFrame {
 		        new ImageIcon("public/icon/logout.png").getImage().getScaledInstance(30, 30,
 		                Image.SCALE_SMOOTH)));
 
-		lblLogOut = new JLabel("Đăng xuất");
-		lblLogOut.setBounds(900, 50, 100, 30);
-		lblLogOut.setForeground(Color.WHITE);
+		btnLogOut = new JButton("Đăng xuất");
+		btnLogOut.setBackground(Color.decode("#1D81CE"));
+		btnLogOut.setBounds(890, 50, 100, 30);
+		btnLogOut.setForeground(Color.WHITE);
 
 
 		pnMain.add(pnMenuJPanel);
@@ -113,7 +114,7 @@ public class Menu extends JFrame {
 		pnMenuJPanel.add(lblIconUser);
 		pnMenuJPanel.add(lblTenUser);
 		pnMenuJPanel.add(lblIconLogOut);
-		pnMenuJPanel.add(lblLogOut);
+		pnMenuJPanel.add(btnLogOut);
 	}
 	 
 	public static void main(String[] args) {
