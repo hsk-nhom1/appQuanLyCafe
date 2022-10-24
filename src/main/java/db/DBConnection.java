@@ -7,28 +7,34 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DBConnection {
-	private static DBConnection instance;
-	private Connection con;
+    private static DBConnection instance = new DBConnection();
+	public static Connection con=null;
 	
-	private DBConnection() {
-		String url="jdbc:sqlserver://localhost:1433;databaseName=QuanLyCafe;trustServerCertificate=true";
-		String user="sa";
-		String pass="12";
-		try {
-			con = DriverManager.getConnection(url, user, pass);
-			System.out.println("Connected");
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
+	public static DBConnection getInstance() {
+        return instance;
+    }
 	
-	public synchronized static DBConnection getInstance() {
-		if(instance == null)
-			instance = new DBConnection();
-		return instance;
-	}
-	
-	public Connection getCon() {
-		return con;
-	}
+	public void connect() throws SQLException{
+        String url = "jdbc:sqlserver://localhost:1433;databaseName=QuanLyCafe";
+        String user = "sa";
+        String password = "123456";
+        con = DriverManager.getConnection(url, user, password);
+        if (con != null) {
+            System.out.println("Kết nối thành công");
+        }
+    }
+	public void disconnect() {
+        if (con!= null) {
+            try {
+                con.close();
+            } catch (Exception e) {
+                // TODO: handle exception
+                e.printStackTrace();
+            }
+        }
+    }
+    public static Connection getConnection() {
+        return con;
+    }
+    
 }

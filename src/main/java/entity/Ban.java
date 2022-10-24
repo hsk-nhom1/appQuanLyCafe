@@ -4,7 +4,17 @@ public class Ban {
 	private String maBan;
 	private String tenBan;
 	private String trangThai;
-	public String getMaBan() {
+	private HoaDon hoaDon;
+	
+	
+	
+	public HoaDon getHoaDon() {
+        return hoaDon;
+    }
+    public void setHoaDon(HoaDon hoaDon) {
+        this.hoaDon = hoaDon;
+    }
+    public String getMaBan() {
 		return maBan;
 	}
 	public void setMaBan(String maBan) {

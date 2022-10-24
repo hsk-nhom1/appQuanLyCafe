@@ -14,7 +14,7 @@ import util.RoundedBorderWithColor;
 public class Menu extends JFrame {
 	private JPanel pnMain;
 	private JPanel pnMenuJPanel;
-	private JButton btnTrangChu, btnSanPham, btnQLBan, btnNhanVien, btnHoaDon, btnLogOut;
+	private JButton btnTrangChu, btnSanPham, btnQLBan, btnNhanVien, btnKhachHang, btnHoaDon, btnLogOut;
 	private JLabel lblIconUser, lblIconLogOut, lblTenUser;
 
 	public Menu() {
@@ -43,7 +43,7 @@ public class Menu extends JFrame {
 		
 		btnTrangChu = new JButton("Trang chủ");
 		btnTrangChu.setHorizontalAlignment(JButton.CENTER);
-		btnTrangChu.setBounds(50, 25, 128, 35);
+		btnTrangChu.setBounds(18, 25, 128, 35);
 		btnTrangChu.setIcon(new ImageIcon(
 		        new ImageIcon("public/icon/home.png").getImage().getScaledInstance(30, 30,
 		                Image.SCALE_SMOOTH)));
@@ -51,7 +51,7 @@ public class Menu extends JFrame {
 		
 		btnSanPham = new JButton("Sản phẩm");
 		btnSanPham.setHorizontalAlignment(JButton.CENTER);
-		btnSanPham.setBounds(200, 25, 128, 35);
+		btnSanPham.setBounds(150, 25, 128, 35);
 		btnSanPham.setIcon(new ImageIcon(
 		        new ImageIcon("public/icon/product.png").getImage().getScaledInstance(30, 30,
 		                Image.SCALE_SMOOTH)));
@@ -59,7 +59,7 @@ public class Menu extends JFrame {
 
 		btnQLBan = new JButton("Quản lý bàn");
 		btnQLBan.setHorizontalAlignment(JButton.CENTER);
-		btnQLBan.setBounds(350, 25, 135, 35);
+		btnQLBan.setBounds(280, 25, 135, 35);
 		btnQLBan.setIcon(new ImageIcon(
 		        new ImageIcon("public/icon/table.png").getImage().getScaledInstance(30, 30,
 		                Image.SCALE_SMOOTH)));
@@ -67,15 +67,23 @@ public class Menu extends JFrame {
 		
 		btnNhanVien = new JButton("Nhân viên");
 		btnNhanVien.setHorizontalAlignment(JButton.CENTER);
-		btnNhanVien.setBounds(500, 25, 128, 35);
+		btnNhanVien.setBounds(418, 25, 128, 35);
 		btnNhanVien.setIcon(new ImageIcon(
 		        new ImageIcon("public/icon/staff.png").getImage().getScaledInstance(30, 30,
 		                Image.SCALE_SMOOTH)));
 		btnNhanVien.setBorder(new RoundedBorderWithColor(Color.decode("#1D81CE"), 1, 10));
+		
+		btnKhachHang = new JButton("Khách hàng");
+		btnKhachHang.setHorizontalAlignment(JButton.CENTER);
+		btnKhachHang.setBounds(550, 25, 128, 35);
+		btnKhachHang.setIcon(new ImageIcon(
+                new ImageIcon("public/icon/customer.png").getImage().getScaledInstance(30, 30,
+                        Image.SCALE_SMOOTH)));
+		btnKhachHang.setBorder(new RoundedBorderWithColor(Color.decode("#1D81CE"), 1, 10));
 
 		btnHoaDon = new JButton("Hóa đơn");
 		btnHoaDon.setHorizontalAlignment(JButton.CENTER);
-		btnHoaDon.setBounds(650, 25, 128, 35);
+		btnHoaDon.setBounds(680, 25, 128, 35);
 		btnHoaDon.setIcon(new ImageIcon(
 		        new ImageIcon("public/icon/bill.png").getImage().getScaledInstance(30, 30,
 		                Image.SCALE_SMOOTH)));
@@ -110,12 +118,14 @@ public class Menu extends JFrame {
 		pnMenuJPanel.add(btnSanPham);
 		pnMenuJPanel.add(btnQLBan);
 		pnMenuJPanel.add(btnNhanVien);
+		pnMenuJPanel.add(btnKhachHang);
 		pnMenuJPanel.add(btnHoaDon);
 		pnMenuJPanel.add(lblIconUser);
 		pnMenuJPanel.add(lblTenUser);
 		pnMenuJPanel.add(lblIconLogOut);
 		pnMenuJPanel.add(btnLogOut);
 	}
+	
 	 
 	public static void main(String[] args) {
 		new Menu().setVisible(true);

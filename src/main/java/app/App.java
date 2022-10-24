@@ -13,7 +13,7 @@ public class App {
 
 	public static void main(String[] args) throws SQLException {
 		// TODO Auto-generated method stub
-		Connection con = DBConnection.getInstance().getCon();
+		Connection con = DBConnection.getConnection();
 		
 		ITaiKhoanService until = new TaiKhoanImpl(con);
 		
