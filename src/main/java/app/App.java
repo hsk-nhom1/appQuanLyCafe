@@ -2,34 +2,43 @@ package app;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
+import dao.HoaDonDao;
 import db.DBConnection;
+import entity.CTHoaDon;
+import entity.HoaDon;
 import entity.TaiKhoan;
 import service.ITaiKhoanService;
+import service.impl.HoaDonImp;
 import service.impl.TaiKhoanImpl;
 
 public class App {
 
-	public static void main(String[] args) throws SQLException {
-		// TODO Auto-generated method stub
-		Connection con = DBConnection.getConnection();
+	public static void main(String[] args) {
 		
-		ITaiKhoanService until = new TaiKhoanImpl(con);
-		
-		until.themTaiKhoan(new TaiKhoan("nam", "123"));
-		until.themTaiKhoan(new TaiKhoan("nam", "123"));
-		until.themTaiKhoan(new TaiKhoan("phong", "1234a"));
-		until.themTaiKhoan(new TaiKhoan("chuong", "aa123"));
-		
-		TaiKhoan tk = until.timTaiKhoan("nam");
-		System.out.println("tim tai khoan: " + tk);
-		tk.setPassword("hahaha");
-		until.suaTaiKhoan("nam",tk);
-		until.xoaTaiKhoan("nu");
-		
-		List<TaiKhoan> ds = until.getDsTaiKhoan();
-		ds.forEach(o -> System.out.println(o));
+	    try {
+            DBConnection.getInstance().connect();
+        } catch (Exception e) {
+            // TODO: handle exception
+            e.printStackTrace();
+        }
+	    
+//		LocalTime time = LocalTime.now();
+//		System.out.println(time);
+//		
+//		String[] thoiGian = time.toString().split(":");
+//		String h = thoiGian[0]+thoiGian[1];
+//		System.out.println(h);
+	    
+	    LocalDate valueNgay = LocalDate.parse("2025-10-1",
+                DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        
+        System.out.println(valueNgay.toString());
 		
 	}
 

@@ -4,6 +4,7 @@ public class Ban {
 	private String maBan;
 	private String tenBan;
 	private String trangThai;
+	
 	private HoaDon hoaDon;
 	
 	

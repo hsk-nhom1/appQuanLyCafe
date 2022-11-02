@@ -10,37 +10,26 @@ import java.util.List;
 
 import db.DBConnection;
 import entity.KhachHang;
-import entity.NhanVien;
-import entity.TaiKhoan;
+import entity.SanPham;
 
-public class NhanVienDao {
+public class KhachHangDao {
     /**
      * lay danh sach khach hang
-     * 
      * @return
      */
-    public List<NhanVien> getAllNhanVien() {
-        List<NhanVien> dS = new ArrayList<NhanVien>();
+    public List<KhachHang> getAllKhachHang() {
+        List<KhachHang> dS = new ArrayList<KhachHang>();
         DBConnection.getInstance();
         Connection con = DBConnection.getConnection();
 
         try {
-            String sql = "select * from NhanVien";
+            String sql = "select * from KhachHang";
             Statement st = con.createStatement();
             ResultSet rs = st.executeQuery(sql);
-
-            while (rs.next()) {
-                NhanVien nhanVien = new NhanVien();
-                nhanVien.setMaNV(rs.getString(1));
-                nhanVien.setTenNV(rs.getString(2));
-                nhanVien.setSdt(rs.getString(3));
-                nhanVien.setEmail(rs.getString(4));
-                nhanVien.setGioiTinh(rs.getString(5));
-                nhanVien.setCmnd(rs.getString(6));
-                nhanVien.setCaTruc(rs.getInt(7));
-                nhanVien.setDiaChi(rs.getString(8));
-                nhanVien.setLuong(rs.getDouble(9));
-                dS.add(nhanVien);
+            
+            while(rs.next()) {             
+               KhachHang kh = new KhachHang(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6));
+                dS.add(kh);
             }
         } catch (SQLException e) {
             // TODO Auto-generated catch block
@@ -48,14 +37,12 @@ public class NhanVienDao {
         }
         return dS;
     }
-
     /**
      * close sql
-     * 
      * @param pst
      */
     private void close(PreparedStatement pst) {
-        if (pst != null) {
+        if (pst !=null) {
             try {
                 pst.close();
             } catch (Exception e) {

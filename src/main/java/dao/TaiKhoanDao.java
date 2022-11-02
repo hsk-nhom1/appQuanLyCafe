@@ -29,11 +29,11 @@ public class TaiKhoanDao {
 		PreparedStatement stmt = con.prepareStatement(sql);
 		ResultSet rs = stmt.executeQuery();
 		while(rs.next()) {
-			TaiKhoan tk = new TaiKhoan(
-					rs.getString("userName"),
-					rs.getString("password")
-					);
-			ds.add(tk);
+//			TaiKhoan tk = new TaiKhoan(
+//					rs.getString("userName"),
+//					rs.getString("password")
+//					);
+//			ds.add(tk);
 		}
 		return ds;
 	}
