@@ -53,11 +53,16 @@ public class Ban {
 	}
 	public Ban() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 	public Ban(String maBan) {
 		super();
 		this.maBan = maBan;
+	}
+	
+	public Ban(String maBan, String tenBan) {
+		super();
+		this.maBan = maBan;
+		this.tenBan = tenBan;
 	}
 	@Override
 	public String toString() {

@@ -77,6 +77,12 @@ public class HoaDon {
 		super();
 		this.maHD = maHD;
 	}
+	
+	public HoaDon(String maHD, LocalDate ngayLapHD) {
+		super();
+		this.maHD = maHD;
+		this.ngayLapHD = ngayLapHD;
+	}
 	@Override
 	public String toString() {
 		return "HoaDon [maHD=" + maHD + ", ngayLapHD=" + ngayLapHD + ", nhanVien=" + nhanVien + ", ban=" + ban

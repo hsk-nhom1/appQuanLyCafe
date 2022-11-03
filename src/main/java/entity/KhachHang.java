@@ -6,7 +6,7 @@ public class KhachHang {
 	private String sdt;
 	private String email;
 	private String gioiTinh;
-	private DiaChi diaChi;
+	private String diaChi;
 	public String getMaKH() {
 		return maKH;
 	}
@@ -37,10 +37,10 @@ public class KhachHang {
 	public void setGioiTinh(String gioiTinh) {
 		this.gioiTinh = gioiTinh;
 	}
-	public DiaChi getDiaChi() {
+	public String getDiaChi() {
 		return diaChi;
 	}
-	public void setDiaChi(DiaChi diaChi) {
+	public void setDiaChi(String diaChi) {
 		this.diaChi = diaChi;
 	}
 	@Override
@@ -66,7 +66,7 @@ public class KhachHang {
 			return false;
 		return true;
 	}
-	public KhachHang(String maKH, String tenKH, String sdt, String email, String gioiTinh, DiaChi diaChi) {
+	public KhachHang(String maKH, String tenKH, String sdt, String email, String gioiTinh, String diaChi) {
 		super();
 		this.maKH = maKH;
 		this.tenKH = tenKH;
@@ -77,11 +77,16 @@ public class KhachHang {
 	}
 	public KhachHang() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 	public KhachHang(String maKH) {
 		super();
 		this.maKH = maKH;
+	}
+	
+	public KhachHang(String maKH, String tenKH) {
+		super();
+		this.maKH = maKH;
+		this.tenKH = tenKH;
 	}
 	@Override
 	public String toString() {

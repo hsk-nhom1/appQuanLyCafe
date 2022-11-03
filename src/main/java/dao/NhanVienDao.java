@@ -7,18 +7,18 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import entity.DiaChi;
+import db.DBConnection;
 import entity.NhanVien;
 import entity.TaiKhoan;
 
 public class NhanVienDao {
 	private Connection con;
-	public NhanVienDao(Connection con) {
-		this.con = con;
+	public NhanVienDao() {
+		con = DBConnection.getInstance().getCon();
 	}
 	
-	public void themNhanVien(NhanVien nv) throws SQLException {
-		String sql = "insert into NhanVien values(?,?,?,?,?,?,?,?,?,?)";
+	public boolean themNhanVien(NhanVien nv) throws SQLException {
+		String sql = "insert into NhanVien values(?,?,?,?,?,?,?,?,?)";
 		PreparedStatement stmt = con.prepareStatement(sql);
 		stmt.setString(1, nv.getMaNV());
 		stmt.setString(2, nv.getTenNV());
@@ -27,10 +27,10 @@ public class NhanVienDao {
 		stmt.setString(5, nv.getGioiTinh());
 		stmt.setString(6, nv.getCmnd());
 		stmt.setInt(7, nv.getCaTruc());
-		stmt.setString(8, nv.getTaiKhoan().getUserName());
-		stmt.setString(9, nv.getDiaChi().getMaDiaChi());
-		stmt.setDouble(10, nv.getLuong());
-		stmt.execute();
+		stmt.setString(8, nv.getDiaChi());
+		stmt.setDouble(9, nv.getLuong());
+		int num = stmt.executeUpdate();
+		return num>0;
 	}
 	
 	public List<NhanVien> getDsNhanVien() throws SQLException {
@@ -39,28 +39,6 @@ public class NhanVienDao {
 		PreparedStatement stmt = con.prepareStatement(sql);
 		ResultSet rs = stmt.executeQuery();
 		while(rs.next()) {
-			TaiKhoan tk = new TaiKhoan();
-			String matk = rs.getString("userName");
-			String gettk = "select * from TaiKhoan where userName = ?";
-			PreparedStatement stmt2 = con.prepareStatement(gettk);
-			stmt2.setString(1, matk);
-			ResultSet rs2 = stmt2.executeQuery();
-			while(rs2.next()) {
-				tk.setUserName(rs2.getString("userName"));
-				tk.setPassword(rs2.getString("password"));
-			}
-			DiaChi dc = new DiaChi();
-			String madc = rs.getString("maDiaChi");
-			String getdc = "select * from DiaChi where maDiaChi = ?";
-			PreparedStatement stmt3 = con.prepareStatement(getdc);
-			stmt3.setString(1, madc);
-			ResultSet rs3 = stmt3.executeQuery();
-			while(rs3.next()) {
-				dc.setMaDiaChi(rs3.getString("maDiaChi"));
-				dc.setXa(rs3.getString("xa"));
-				dc.setHuyen(rs3.getString("huyen"));
-				dc.setTinh(rs3.getString("tinh"));
-			}
 			NhanVien nv = new NhanVien(
 						rs.getString("maNV"),
 						rs.getString("tenNV"),
@@ -69,8 +47,7 @@ public class NhanVienDao {
 						rs.getString("gioiTinh"),
 						rs.getString("cmnd"),
 						rs.getInt("caTruc"),
-						tk,
-						dc,
+						rs.getString("diachi"),
 						rs.getDouble("luong")
 					);
 			ds.add(nv);
@@ -78,24 +55,31 @@ public class NhanVienDao {
 		return ds;
 	}
 	
-	public void suaNhanVien(String ma, NhanVien nv) throws SQLException {
-		String sql = "update NhanVien set tenNV = ?, sdt = ?, email = ?, gioiTinh = ?, cmnd = ?, caTruc = ?, luong = ? where maNV = ?";
+	public boolean suaNhanVien(NhanVien nv) throws SQLException {
+		String sql = "update NhanVien set tenNV = ?, sdt = ?, email = ?, gioiTinh = ?, cmnd = ?, caTruc = ?, diachi = ?,luong = ? where maNV = ?";
 		PreparedStatement stmt = con.prepareStatement(sql);
 		stmt.setString(1, nv.getTenNV());
-		stmt.setString(2, nv.getMaNV());
+		stmt.setString(2, nv.getSdt());
 		stmt.setString(3, nv.getEmail());
 		stmt.setString(4, nv.getGioiTinh());
 		stmt.setString(5, nv.getCmnd());
 		stmt.setInt(6, nv.getCaTruc());
-		stmt.setDouble(7, nv.getLuong());
-		stmt.setString(8, ma);
-		stmt.execute();
+		stmt.setString(7, nv.getDiaChi());
+		stmt.setDouble(8, nv.getLuong());
+		stmt.setString(9, nv.getMaNV());
+		int num = stmt.executeUpdate();
+		return num>0;
 	}
-	public void xoaNhanVien(String ma) throws SQLException {
+	public boolean xoaNhanVien(String ma) throws SQLException {
+		String sqlnull = "update hoadon set manv = null where manv = ?" ;
+		PreparedStatement stmtnull = con.prepareStatement(sqlnull);
+		stmtnull.setString(1, ma);
+		stmtnull.execute();
 		String sql = "delete from NhanVien where maNV = ?";
 		PreparedStatement stmt = con.prepareStatement(sql);
 		stmt.setString(1, ma);
-		stmt.execute();
+		int num = stmt.executeUpdate();
+		return num>0;
 	}
 	
 }

@@ -11,8 +11,8 @@ import service.ITaiKhoanService;
 public class TaiKhoanImpl implements ITaiKhoanService{
 	
 	private TaiKhoanDao taiKhoanDao;
-	public TaiKhoanImpl(Connection con) {
-		taiKhoanDao = new TaiKhoanDao(con);
+	public TaiKhoanImpl() {
+		taiKhoanDao = new TaiKhoanDao();
 	}
 
 	public boolean themTaiKhoan(TaiKhoan tk) throws SQLException {
@@ -20,23 +20,17 @@ public class TaiKhoanImpl implements ITaiKhoanService{
 		if(ds.contains(tk)) {
 			return false;
 		}
-		taiKhoanDao.themTaiKhoan(tk);
-		return true;
+		return taiKhoanDao.themTaiKhoan(tk);
 	}
 
 	public List<TaiKhoan> getDsTaiKhoan() throws SQLException {
 		return taiKhoanDao.getDsTaiKhoan();
 	}
 
-	public boolean suaTaiKhoan(String maTK, TaiKhoan tk) throws SQLException{
-		if(timTaiKhoan(maTK) == null)
-			return false;
-		taiKhoanDao.suaTaiKhoan(maTK, tk);
-		return true;
-	}
-
-	public TaiKhoan timTaiKhoan(String maTK) throws SQLException {
+	public TaiKhoan timMa(String maTK) throws SQLException {
 		List<TaiKhoan> ds= getDsTaiKhoan();
+		if(maTK==null || maTK.equals(""))
+			return null;
 		TaiKhoan tk = ds.stream()
 				.filter(o -> o.getUserName().equals(maTK))
 				.findAny()
@@ -46,11 +40,28 @@ public class TaiKhoanImpl implements ITaiKhoanService{
 
 	@Override
 	public boolean xoaTaiKhoan(String maTK) throws SQLException {
-		if(timTaiKhoan(maTK) == null) {
+		if(timMa(maTK) == null) {
 			return false;
 		}
-		taiKhoanDao.xoaTaiKhoan(maTK);
-		return true;
+		return taiKhoanDao.xoaTaiKhoan(maTK);
+	}
+
+	@Override
+	public boolean doiMatKhau(String userName, String password) throws SQLException {
+		if(timMa(userName).getPassword().equals(password))
+			return false;
+		if(password.equals(""))
+			return false;
+		if(timMa(userName)==null)
+			return false;
+		return taiKhoanDao.doiMatKhau(userName, password);
+	}
+
+	@Override
+	public boolean doiUserName(String userName, String newUserName) throws SQLException {
+		if(timMa(userName) == null)
+			return false;
+		return taiKhoanDao.doiUserName(userName, newUserName);
 	}
 
 }

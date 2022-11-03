@@ -8,8 +8,7 @@ public class NhanVien {
 	private String gioiTinh;
 	private String cmnd;
 	private int caTruc;
-	private TaiKhoan taiKhoan;
-	private DiaChi diaChi;
+	private String diaChi;
 	private double luong;
 	public String getMaNV() {
 		return maNV;
@@ -53,16 +52,10 @@ public class NhanVien {
 	public void setCaTruc(int caTruc) {
 		this.caTruc = caTruc;
 	}
-	public TaiKhoan getTaiKhoan() {
-		return taiKhoan;
-	}
-	public void setTaiKhoan(TaiKhoan taiKhoan) {
-		this.taiKhoan = taiKhoan;
-	}
-	public DiaChi getDiaChi() {
+	public String getDiaChi() {
 		return diaChi;
 	}
-	public void setDiaChi(DiaChi diaChi) {
+	public void setDiaChi(String diaChi) {
 		this.diaChi = diaChi;
 	}
 	public double getLuong() {
@@ -95,7 +88,7 @@ public class NhanVien {
 		return true;
 	}
 	public NhanVien(String maNV, String tenNV, String sdt, String email, String gioiTinh, String cmnd, int caTruc,
-			TaiKhoan taiKhoan, DiaChi diaChi, double luong) {
+			String diaChi, double luong) {
 		super();
 		this.maNV = maNV;
 		this.tenNV = tenNV;
@@ -104,9 +97,14 @@ public class NhanVien {
 		this.gioiTinh = gioiTinh;
 		this.cmnd = cmnd;
 		this.caTruc = caTruc;
-		this.taiKhoan = taiKhoan;
 		this.diaChi = diaChi;
 		this.luong = luong;
+	}
+	
+	public NhanVien(String maNV, String tenNV) {
+		super();
+		this.maNV = maNV;
+		this.tenNV = tenNV;
 	}
 	public NhanVien() {
 		super();
@@ -119,7 +117,7 @@ public class NhanVien {
 	@Override
 	public String toString() {
 		return "NhanVien [maNV=" + maNV + ", tenNV=" + tenNV + ", sdt=" + sdt + ", email=" + email + ", gioiTinh="
-				+ gioiTinh + ", cmnd=" + cmnd + ", caTruc=" + caTruc + ", taiKhoan=" + taiKhoan + ", diaChi=" + diaChi
+				+ gioiTinh + ", cmnd=" + cmnd + ", caTruc=" + caTruc + ", diaChi=" + diaChi
 				+ ", luong=" + luong + "]";
 	}
 	

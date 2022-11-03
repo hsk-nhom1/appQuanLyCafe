@@ -75,6 +75,13 @@ public class SanPham {
 		super();
 		this.maSP = maSP;
 	}
+	
+	public SanPham(String maSP, String tenSP, double gia) {
+		super();
+		this.maSP = maSP;
+		this.tenSP = tenSP;
+		this.gia = gia;
+	}
 	@Override
 	public String toString() {
 		return "SanPham [maSP=" + maSP + ", tenSP=" + tenSP + ", gia=" + gia + ", congThuc=" + congThuc + ", loai="

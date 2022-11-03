@@ -3,6 +3,7 @@ package entity;
 public class TaiKhoan {
 	private String userName;
 	private String password;
+	private NhanVien nhanVien;
 	public String getUserName() {
 		return userName;
 	}
@@ -15,45 +16,30 @@ public class TaiKhoan {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((userName == null) ? 0 : userName.hashCode());
-		return result;
+	public NhanVien getNhanVien() {
+		return nhanVien;
 	}
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		TaiKhoan other = (TaiKhoan) obj;
-		if (userName == null) {
-			if (other.userName != null)
-				return false;
-		} else if (!userName.equals(other.userName))
-			return false;
-		return true;
+	public void setNhanVien(NhanVien nhanVien) {
+		this.nhanVien = nhanVien;
 	}
-	public TaiKhoan(String userName, String password) {
+	public TaiKhoan(String userName, String password, NhanVien nhanVien) {
 		super();
 		this.userName = userName;
 		this.password = password;
-	}
-	public TaiKhoan() {
-		super();
-		// TODO Auto-generated constructor stub
+		this.nhanVien = nhanVien;
 	}
 	public TaiKhoan(String userName) {
 		super();
 		this.userName = userName;
 	}
+	public TaiKhoan() {
+		super();
+	}
 	@Override
 	public String toString() {
-		return "TaiKhoan [userName=" + userName + ", password=" + password + "]";
+		return "TaiKhoan [userName=" + userName + ", password=" + password + ", nhanVien=" + nhanVien + "]";
 	}
+	
+	
 	
 }
