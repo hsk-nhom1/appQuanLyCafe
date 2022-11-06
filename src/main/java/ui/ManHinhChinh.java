@@ -2,6 +2,7 @@ package ui;
 
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.HeadlessException;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -47,10 +48,9 @@ import entity.HoaDon;
 import entity.KhachHang;
 import entity.NhanVien;
 import entity.SanPham;
-import service.IHoaDonService;
 import service.impl.BanImp;
 import service.impl.HoaDonImp;
-import service.impl.KhachHangImp;
+import service.impl.KhachHangImpl;
 import service.impl.NhanVienImp;
 import service.impl.SanPhamImp;
 import util.Generator;
@@ -59,8 +59,9 @@ import util.RoundedBorderWithColor;
 public class ManHinhChinh extends JFrame implements ActionListener, MouseListener {
     private JPanel pnMain;
     private JPanel pnMenuJPanel;
-    private JButton btnTrangChu, btnSanPham, btnQLBan, btnNhanVien, btnKhachHang, btnHoaDon, btnLogOut;
+    private JButton btnTrangChu, btnSanPham, btnThongKe, btnNhanVien, btnKhachHang, btnHoaDon, btnLogOut;
     private JLabel lblIconUser, lblIconLogOut, lblTenUser;
+    
     /**
      * private
      */
@@ -81,13 +82,13 @@ public class ManHinhChinh extends JFrame implements ActionListener, MouseListene
     private DatePicker txtNgay;
 
     private SanPhamImp spimp = new SanPhamImp();
-    private KhachHangImp khachHangImp = new KhachHangImp();
+    private KhachHangImpl khachHangImp = new KhachHangImpl();
     private HoaDonImp hoaDonImp = new HoaDonImp();
     private BanImp banImp = new BanImp();
     private NhanVienImp nhanVienImp = new NhanVienImp();
     private HoaDonDao hdDao = new HoaDonDao();
 
-    public ManHinhChinh() {
+    public ManHinhChinh(String maBan) {
         try {
             DBConnection.getInstance().connect();
         } catch (Exception e) {
@@ -104,9 +105,8 @@ public class ManHinhChinh extends JFrame implements ActionListener, MouseListene
         MainUI();
         PnMenu();
         PnLeft();
-        PnCenter();
+        PnCenter(maBan);
         PnRight();
-
     }
 
     private void PnRight() {
@@ -169,7 +169,7 @@ public class ManHinhChinh extends JFrame implements ActionListener, MouseListene
         cmbSLOrd.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
 
-    private void PnCenter() {
+    private void PnCenter(String maBan) {
         Box boxCenTer, bCenter1, bCenter2, bCenter3, bButton, bBtnChild1, bBtnChild2, bBtnChild3, bTongTien;
         pnMain.add(boxCenTer = Box.createVerticalBox());
         boxCenTer.add(Box.createVerticalStrut(10));
@@ -181,11 +181,9 @@ public class ManHinhChinh extends JFrame implements ActionListener, MouseListene
         bCenter1.add(cmbMaBan = new JComboBox<String>());
         bCenter1.add(Box.createHorizontalStrut(95));
 
-        for (int i = 1; i < 33; i++) {
-            if (i <= 9)
-                cmbMaBan.addItem("B0" + i);
-            else
-                cmbMaBan.addItem("B" + i);
+    
+        for (Ban b : banImp.getDsBan()) {
+            cmbMaBan.addItem(b.getMaBan());
         }
 
         bCenter1.add(lblNgay = new JLabel("Ngày: "));
@@ -272,6 +270,8 @@ public class ManHinhChinh extends JFrame implements ActionListener, MouseListene
         bBtnChild2.add(btnTruOrd = new JButton("-"));
         bBtnChild2.add(Box.createHorizontalStrut(10));
         boxCenTer.add(Box.createVerticalStrut(10));
+        
+        
 
         if (txtSoLuongSPOrd.getText().equals("")) {
             txtSoLuongSPOrd.setText("0");
@@ -335,6 +335,19 @@ public class ManHinhChinh extends JFrame implements ActionListener, MouseListene
                 }
             }
         });
+        if(maBan == null) {
+        }else {
+            for (HoaDon h : hoaDonImp.getAllHoaDon()) {
+                if (h.getBan().getMaBan().equals(maBan)) {
+                    hdDao.updateTrangThaiHoaDon(h.getMaHD());
+                    banImp.UpdateTrangThaiBan(h.getBan(), "trong");
+                    UpdateTrangThaiBan();
+                    tableModelOrder.setRowCount(0);
+                }
+            }
+            JOptionPane.showMessageDialog(this, "Thanh toán thành công");
+        }
+        
     }
 
     /**
@@ -343,7 +356,7 @@ public class ManHinhChinh extends JFrame implements ActionListener, MouseListene
     private void UpdataCbmKhachHang() {
         cbmKhachHang.removeAll();
         for (KhachHang kh : khachHangImp.getDsKhachHang()) {
-            cbmKhachHang.addItem(kh.getTenKH());
+           cbmKhachHang.addItem(kh.getTenKH());
         }
         cbmKhachHang.updateUI();
     }
@@ -352,12 +365,14 @@ public class ManHinhChinh extends JFrame implements ActionListener, MouseListene
         pnMain = new JPanel();
         pnMain.setLayout(null);
         setContentPane(pnMain);
+        pnMain.setBackground(Color.decode("#D6D9DF"));
     }
 
     private void PnLeft() {
         JPanel pnLeft = new JPanel();
         pnLeft.setLayout(null);
         pnLeft.setBounds(0, 0, 350, 700);
+        pnLeft.setBackground(Color.decode("#D6D9DF"));
 
         Box dsBanBox, dsBanNgoaiSan, chuThichBox, dsBan1Box, dsBan2Box, dsBan3Box, dsBan4Box, dsBan5Box, dsBan6Box,
                 dsBan7Box,
@@ -492,7 +507,7 @@ public class ManHinhChinh extends JFrame implements ActionListener, MouseListene
         btnTrangChu.setHorizontalAlignment(JButton.CENTER);
         btnTrangChu.setBounds(18, 25, 128, 35);
         btnTrangChu.setIcon(new ImageIcon(
-                new ImageIcon("public/icon/home.png").getImage().getScaledInstance(30, 30,
+                new ImageIcon("public/icon/home.png").getImage().getScaledInstance(25, 25,
                         Image.SCALE_SMOOTH)));
         btnTrangChu.setBorder(new RoundedBorderWithColor(Color.decode("#1D81CE"), 1, 10));
 
@@ -504,19 +519,19 @@ public class ManHinhChinh extends JFrame implements ActionListener, MouseListene
                         Image.SCALE_SMOOTH)));
         btnSanPham.setBorder(new RoundedBorderWithColor(Color.decode("#1D81CE"), 1, 10));
 
-        btnQLBan = new JButton("Quản lý bàn");
-        btnQLBan.setHorizontalAlignment(JButton.CENTER);
-        btnQLBan.setBounds(280, 25, 135, 35);
-        btnQLBan.setIcon(new ImageIcon(
-                new ImageIcon("public/icon/table.png").getImage().getScaledInstance(30, 30,
+        btnThongKe = new JButton("Thống kê");
+        btnThongKe.setHorizontalAlignment(JButton.CENTER);
+        btnThongKe.setBounds(280, 25, 135, 35);
+        btnThongKe.setIcon(new ImageIcon(
+                new ImageIcon("public/icon/money.png").getImage().getScaledInstance(25, 25,
                         Image.SCALE_SMOOTH)));
-        btnQLBan.setBorder(new RoundedBorderWithColor(Color.decode("#1D81CE"), 1, 10));
+        btnThongKe.setBorder(new RoundedBorderWithColor(Color.decode("#1D81CE"), 1, 10));
 
         btnNhanVien = new JButton("Nhân viên");
         btnNhanVien.setHorizontalAlignment(JButton.CENTER);
         btnNhanVien.setBounds(418, 25, 128, 35);
         btnNhanVien.setIcon(new ImageIcon(
-                new ImageIcon("public/icon/staff.png").getImage().getScaledInstance(30, 30,
+                new ImageIcon("public/icon/staff.png").getImage().getScaledInstance(25, 25,
                         Image.SCALE_SMOOTH)));
         btnNhanVien.setBorder(new RoundedBorderWithColor(Color.decode("#1D81CE"), 1, 10));
 
@@ -524,7 +539,7 @@ public class ManHinhChinh extends JFrame implements ActionListener, MouseListene
         btnKhachHang.setHorizontalAlignment(JButton.CENTER);
         btnKhachHang.setBounds(550, 25, 128, 35);
         btnKhachHang.setIcon(new ImageIcon(
-                new ImageIcon("public/icon/customer.png").getImage().getScaledInstance(30, 30,
+                new ImageIcon("public/icon/customer.png").getImage().getScaledInstance(25, 25,
                         Image.SCALE_SMOOTH)));
         btnKhachHang.setBorder(new RoundedBorderWithColor(Color.decode("#1D81CE"), 1, 10));
 
@@ -532,7 +547,7 @@ public class ManHinhChinh extends JFrame implements ActionListener, MouseListene
         btnHoaDon.setHorizontalAlignment(JButton.CENTER);
         btnHoaDon.setBounds(680, 25, 128, 35);
         btnHoaDon.setIcon(new ImageIcon(
-                new ImageIcon("public/icon/bill.png").getImage().getScaledInstance(30, 30,
+                new ImageIcon("public/icon/bill.png").getImage().getScaledInstance(25, 25,
                         Image.SCALE_SMOOTH)));
         btnHoaDon.setBorder(new RoundedBorderWithColor(Color.decode("#1D81CE"), 1, 10));
 
@@ -560,7 +575,7 @@ public class ManHinhChinh extends JFrame implements ActionListener, MouseListene
         pnMain.add(pnMenuJPanel);
         pnMenuJPanel.add(btnTrangChu);
         pnMenuJPanel.add(btnSanPham);
-        pnMenuJPanel.add(btnQLBan);
+        pnMenuJPanel.add(btnThongKe);
         pnMenuJPanel.add(btnNhanVien);
         pnMenuJPanel.add(btnKhachHang);
         pnMenuJPanel.add(btnHoaDon);
@@ -568,15 +583,57 @@ public class ManHinhChinh extends JFrame implements ActionListener, MouseListene
         pnMenuJPanel.add(lblTenUser);
         pnMenuJPanel.add(lblIconLogOut);
         pnMenuJPanel.add(btnLogOut);
+        
+        btnKhachHang.addActionListener(this);
+        btnTrangChu.addActionListener(this);
+        btnSanPham.addActionListener(this);
     }
 
     public static void main(String[] args) {
-        new ManHinhChinh().setVisible(true);
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(ThanhToan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(ThanhToan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(ThanhToan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(ThanhToan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        // </editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new ManHinhChinh(null).setVisible(true);
+            }
+        });
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         Object o = e.getSource();
+        /**
+         * Event button menu
+         */
+        if(o.equals(btnKhachHang)) {
+            new QuanLyKhachHang().setVisible(true);
+            new ManHinhChinh(null).setVisible(false);
+        }else if(o.equals(btnTrangChu)) {
+            new ManHinhChinh(null).setVisible(false);
+        }else if(o.equals(btnSanPham)) {
+           new ui.SanPham().setVisible(true);
+        }
+        
+        /**
+         * Event button chức năng
+         */
         if (o.equals(btnThemOrd)) {
             String value = txtSoLuongSPOrd.getText();
             if (value.equals("")) {
@@ -636,6 +693,8 @@ public class ManHinhChinh extends JFrame implements ActionListener, MouseListene
             if (btnTaoHoaDon.getText().equals("Tạo hóa đơn")) {
                 JOptionPane.showMessageDialog(this, "Tạo hóa đơn thành công");
                 TaoHoaDon();
+                UpdataHoaDonBan(cmbMaBan.getSelectedItem().toString());
+                UpdateTongTien();
             } else if (btnTaoHoaDon.getText().equals("Cập nhật hóa đơn")) {
                 String maHD = "";
                 for (Ban b : banImp.getDsBanActive()) {
@@ -648,15 +707,6 @@ public class ManHinhChinh extends JFrame implements ActionListener, MouseListene
             }
         } else if (o.equals(btnThanhToan)) {
             String maBan = cmbMaBan.getSelectedItem().toString();
-//            for (HoaDon h : hoaDonImp.getAllHoaDon()) {
-//                if (h.getBan().getMaBan().equals(maBan)) {
-//                    hdDao.updateTrangThaiHoaDon(h.getMaHD());
-//                    banImp.UpdateTrangThaiBan(h.getBan(), "trong");
-//                    UpdateTrangThaiBan();
-//                    tableModelOrder.setRowCount(0);
-//                }
-//            }
-//            JOptionPane.showMessageDialog(this, "Thanh toán thành công");
             OpenUiThanhToan(maBan);
         } else {
             for (int i = 1; i < dsBtn.length; i++) {

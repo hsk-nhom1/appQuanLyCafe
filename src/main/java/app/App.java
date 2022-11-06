@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dao.HoaDonDao;
+import dao.KhachHangDao;
 import db.DBConnection;
 import entity.CTHoaDon;
 import entity.HoaDon;
@@ -34,12 +35,11 @@ public class App {
 //		String[] thoiGian = time.toString().split(":");
 //		String h = thoiGian[0]+thoiGian[1];
 //		System.out.println(h);
+	    KhachHangDao khdao = new KhachHangDao();
 	    
-	    LocalDate valueNgay = LocalDate.parse("2025-10-1",
-                DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+	 
+            khdao.getAllKhachHang().forEach(e -> System.out.println(e));
         
-        System.out.println(valueNgay.toString());
-		
 	}
 
 }

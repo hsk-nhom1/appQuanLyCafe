@@ -8,16 +8,18 @@ import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Locale;
 
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 import dao.HoaDonDao;
+import entity.CTHoaDon;
 import entity.HoaDon;
 import service.impl.BanImp;
 import service.impl.HoaDonImp;
-import service.impl.KhachHangImp;
+import service.impl.KhachHangImpl;
 import service.impl.NhanVienImp;
 import service.impl.SanPhamImp;
 
@@ -29,7 +31,7 @@ public class ThanhToan extends javax.swing.JFrame {
     private String maBans;
     private DefaultTableModel tableModel;
     private SanPhamImp spimp = new SanPhamImp();
-    private KhachHangImp khachHangImp = new KhachHangImp();
+    private KhachHangImpl khachHangImp = new KhachHangImpl();
     private HoaDonImp hoaDonImp = new HoaDonImp();
     private BanImp banImp = new BanImp();
     private NhanVienImp nhanVienImp = new NhanVienImp();
@@ -41,6 +43,8 @@ public class ThanhToan extends javax.swing.JFrame {
     public ThanhToan(String maBan) {
         setSize(770, 600);
         setLocationRelativeTo(null);
+        setResizable(false);
+        setTitle("Thanh toán hóa đơn bàn "+maBan);
         maBans = maBan;
         initComponents();
         UpdataHoaDon(maBans);
@@ -50,21 +54,39 @@ public class ThanhToan extends javax.swing.JFrame {
         tableModel.setRowCount(0);
         Locale localeEN = new Locale("en", "EN");
         NumberFormat en = NumberFormat.getInstance(localeEN);
+        double tongTien = 0;
+        double chietKhau = 0;
+        int sl=0;
         for (HoaDon h : hoaDonImp.getHoaDonWhereBan(maBan)) {
             double thanhTien = h.getDsCTHD().get(0).getSoLuong() * h.getDsCTHD().get(0).getSanPham().getGia();
             String[] row = { h.getDsCTHD().get(0).getSanPham().getTenSP(),
                     en.format(h.getDsCTHD().get(0).getSanPham().getGia()),
                     String.valueOf(h.getDsCTHD().get(0).getSoLuong()), en.format(thanhTien) };
-            
+
+            tongTien += thanhTien;
+
+            sl+=h.getDsCTHD().get(0).getSoLuong();
+
             txtTenKH.setText(h.getKhachHang().getTenKH());
             txtTenNV.setText(h.getNhanVien().getTenNV());
             txtSDT.setText(h.getKhachHang().getSdt());
             txtSDTNV.setText(h.getNhanVien().getSdt());
-            lblNgay.setText("Ngày: "+h.getNgayLapHD());
+            lblNgay.setText("Ngày: " + h.getNgayLapHD());
             txtMaBan.setText(maBan);
-            
+
+            txtMaHD.setText(h.getMaHD());
             tableModel.addRow(row);
-        }      
+        }
+        if(sl  >= 5 && sl < 10){// chiết khấu 5%
+            chietKhau=tongTien*0.05;
+            jLabel17.setText("Chiết khấu(5%):");
+            txtChietKhau.setText(en.format(chietKhau)+" VND");
+        }else {
+            chietKhau=tongTien*0.1;
+            jLabel17.setText("Chiết khấu(10%):");
+            txtChietKhau.setText(en.format(chietKhau)+" VND");
+        }
+        txtTongTienPhaiTra.setText(en.format(tongTien-chietKhau) + " VND");
         table.setModel(tableModel);
         table.updateUI();
     }
@@ -135,7 +157,7 @@ public class ThanhToan extends javax.swing.JFrame {
 
         String[] header = { "Tên sản phẩm", "Đơn giá", "Số lượng", "Thành tiền" };
         tableModel = new DefaultTableModel(header, 0);
-        
+
         table = new JTable(tableModel);
 
         jScrollPane1.setViewportView(table);
@@ -148,9 +170,9 @@ public class ThanhToan extends javax.swing.JFrame {
 
         txtMaHD.setText("HD08938N");
 
-        jLabel17.setText("Chiết khấu(5%):");
+        jLabel17.setText("Chiết khấu(%):");
 
-        txtChietKhau.setText("5000");
+        txtChietKhau.setText("0%");
 
         jLabel19.setText("Tổng tiền phải thanh toán:");
 
@@ -163,14 +185,17 @@ public class ThanhToan extends javax.swing.JFrame {
         btnThanhToan.setText("Thanh toán");
         btnThanhToan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnThanhToanActionPerformed(evt);
+                new ManHinhChinh(maBans);
+                setVisible(false);
+                new ManHinhChinh(null).setVisible(true);
             }
         });
 
         btnCencel.setText("Cencel");
         btnCencel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCencelActionPerformed(evt);
+                setVisible(false);
+                new ManHinhChinh(null).setVisible(true);
             }
         });
 

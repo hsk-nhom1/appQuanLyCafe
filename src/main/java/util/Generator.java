@@ -31,12 +31,12 @@ public class Generator {
     public String tuTaoMaHoaDon(String maBan, String maKH, LocalDate ngayLapHD) {
 
         String[] day = ngayLapHD.toString().split("-");
-        String ngayLapHDs= day[0]+day[1]+day[2]+"-";
+        String ngayLapHDs= day[0]+day[1]+day[2];
         
         LocalTime time = LocalTime.now();
         
         String[] thoiGian = time.toString().split(":");
-        String h = thoiGian[0]+thoiGian[1]+"-";
+        String h = thoiGian[0]+thoiGian[1];
 
         String maHD = "";
         maHD += ngayLapHDs;

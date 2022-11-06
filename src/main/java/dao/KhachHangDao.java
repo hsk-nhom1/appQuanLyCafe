@@ -37,6 +37,84 @@ public class KhachHangDao {
         }
         return dS;
     }
+    
+    public boolean themKhachHang(KhachHang kh){
+        DBConnection.getInstance();
+        Connection con = DBConnection.getConnection();
+        String sql = "insert into khachhang values(?,?,?,?,?,?)";
+        
+        PreparedStatement stmt;
+        int n=0;
+        try {
+            stmt = con.prepareStatement(sql);
+            stmt.setString(1, kh.getMaKH());
+            stmt.setString(2, kh.getTenKH());
+            stmt.setString(3, kh.getSdt());
+            stmt.setString(4, kh.getEmail());
+            stmt.setString(5, kh.getGioiTinh());
+            stmt.setString(6, kh.getDiaChi());
+            n = stmt.executeUpdate();
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+       
+        return n > 0;
+    }
+    
+    /**
+     * sửa khách hàng
+     * @param kh
+     * @return
+     * @throws SQLException
+     */
+    public boolean suaKhachHang(KhachHang kh) {
+        DBConnection.getInstance();
+        Connection con = DBConnection.getConnection();
+        String sql = "update khachhang set tenkh = ?, sdt = ?, email = ?, gioiTinh = ?, diachi = ? where makh = ?";
+        
+        PreparedStatement stmt;
+        int n=0;
+        try {
+            stmt = con.prepareStatement(sql);
+            stmt.setString(1, kh.getTenKH());
+            stmt.setString(2, kh.getSdt());
+            stmt.setString(3, kh.getEmail());
+            stmt.setString(4, kh.getGioiTinh());
+            stmt.setString(5, kh.getDiaChi());
+            stmt.setString(6, kh.getMaKH());
+           n = stmt.executeUpdate();
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+       
+        return n > 0;
+    }
+
+    /**
+     * xóa khách hàng
+     * @param ma
+     * @return
+     * @throws SQLException
+     */
+    public boolean xoaKhachHang(String ma)  {
+        DBConnection.getInstance();
+        Connection con = DBConnection.getConnection();
+        String sql = "delete from khachhang where makh = ?";
+        PreparedStatement stmt;
+        int n =0;
+        try {
+            stmt = con.prepareStatement(sql);
+            stmt.setString(1, ma);
+            n = stmt.executeUpdate();
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+       
+        return n > 0;
+    }
     /**
      * close sql
      * @param pst
