@@ -44,7 +44,7 @@ public class ThanhToan extends javax.swing.JFrame {
         setSize(770, 600);
         setLocationRelativeTo(null);
         setResizable(false);
-        setTitle("Thanh toán hóa đơn bàn "+maBan);
+        setTitle("Thanh toán hóa đơn bàn " + maBan);
         maBans = maBan;
         initComponents();
         UpdataHoaDon(maBans);
@@ -56,7 +56,7 @@ public class ThanhToan extends javax.swing.JFrame {
         NumberFormat en = NumberFormat.getInstance(localeEN);
         double tongTien = 0;
         double chietKhau = 0;
-        int sl=0;
+        int sl = 0;
         for (HoaDon h : hoaDonImp.getHoaDonWhereBan(maBan)) {
             double thanhTien = h.getDsCTHD().get(0).getSoLuong() * h.getDsCTHD().get(0).getSanPham().getGia();
             String[] row = { h.getDsCTHD().get(0).getSanPham().getTenSP(),
@@ -65,7 +65,7 @@ public class ThanhToan extends javax.swing.JFrame {
 
             tongTien += thanhTien;
 
-            sl+=h.getDsCTHD().get(0).getSoLuong();
+            sl += h.getDsCTHD().get(0).getSoLuong();
 
             txtTenKH.setText(h.getKhachHang().getTenKH());
             txtTenNV.setText(h.getNhanVien().getTenNV());
@@ -77,16 +77,29 @@ public class ThanhToan extends javax.swing.JFrame {
             txtMaHD.setText(h.getMaHD());
             tableModel.addRow(row);
         }
-        if(sl  >= 5 && sl < 10){// chiết khấu 5%
-            chietKhau=tongTien*0.05;
+        if (sl >= 5 && sl < 10) {// chiết khấu 5%
+            chietKhau = tongTien * 0.05;
             jLabel17.setText("Chiết khấu(5%):");
-            txtChietKhau.setText(en.format(chietKhau)+" VND");
-        }else {
-            chietKhau=tongTien*0.1;
+            txtChietKhau.setText(en.format(chietKhau) + " VND");
+        } else if (sl < 5) {
+            chietKhau = 0;
+        } else {
+            chietKhau = tongTien * 0.1;
             jLabel17.setText("Chiết khấu(10%):");
-            txtChietKhau.setText(en.format(chietKhau)+" VND");
+            txtChietKhau.setText(en.format(chietKhau) + " VND");
         }
-        txtTongTienPhaiTra.setText(en.format(tongTien-chietKhau) + " VND");
+        txtTongTienPhaiTra.setText(en.format(tongTien - chietKhau) + " VND");
+        
+        double tienIP=0;
+        if(txtTienInput.getText().equals(""))
+            tienIP = 0;
+        else {
+            double tienKH = Double.parseDouble(txtTienInput.getText());
+            double tienTraLai = (tongTien-chietKhau) -tienKH;
+            txtTienOutput.setText(String.valueOf(tienTraLai));
+        }
+       
+        
         table.setModel(tableModel);
         table.updateUI();
     }

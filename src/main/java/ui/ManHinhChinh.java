@@ -185,7 +185,16 @@ public class ManHinhChinh extends JFrame implements ActionListener, MouseListene
         for (Ban b : banImp.getDsBan()) {
             cmbMaBan.addItem(b.getMaBan());
         }
-
+        
+        cmbMaBan.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String maBans = cmbMaBan.getSelectedItem().toString().trim();
+                UpdataHoaDonBan(maBans);
+                btnTaoHoaDon.setEnabled(false);
+            }
+        });
+        
         bCenter1.add(lblNgay = new JLabel("Ngày: "));
         dateSettings = new DatePickerSettings();
         dateSettings.setAllowKeyboardEditing(false);
@@ -668,6 +677,7 @@ public class ManHinhChinh extends JFrame implements ActionListener, MouseListene
                 UpdataOrder();
                 UpdateTongTien();
                 JOptionPane.showMessageDialog(this, "Thêm thành công");
+                btnTaoHoaDon.setEnabled(true);
             }
         } else if (o.equals(btnXoaOrd)) {
             int row = tableOrder.getSelectedRow();
@@ -676,6 +686,7 @@ public class ManHinhChinh extends JFrame implements ActionListener, MouseListene
             } else {
                 tableModelOrder.removeRow(row);
                 JOptionPane.showMessageDialog(this, "Xóa sản phẩm thành công");
+                btnTaoHoaDon.setEnabled(true);
                 UpdateTongTien();
                 XoaRong();
             }
@@ -686,6 +697,7 @@ public class ManHinhChinh extends JFrame implements ActionListener, MouseListene
             } else {
                 tableModelOrder.setValueAt(txtSoLuongSPOrd.getText(), row, 2);
                 JOptionPane.showMessageDialog(this, "Cập nhật thành công");
+                btnTaoHoaDon.setEnabled(true);
                 UpdateTongTien();
                 XoaRong();
             }
@@ -703,11 +715,16 @@ public class ManHinhChinh extends JFrame implements ActionListener, MouseListene
                 }
                 hoaDonImp.resetCTHD(maHD);
                 ThemSanPhamVaoHoaDon(maHD);
+                btnTaoHoaDon.setEnabled(false);
                 JOptionPane.showMessageDialog(this, "Cập nhật hóa đơn thành công");
             }
         } else if (o.equals(btnThanhToan)) {
             String maBan = cmbMaBan.getSelectedItem().toString();
-            OpenUiThanhToan(maBan);
+            if(btnTaoHoaDon.isEnabled() == true) {
+                JOptionPane.showMessageDialog(this, "Hóa đơn chưa được cập nhật");
+            }else {
+                OpenUiThanhToan(maBan);
+            }
         } else {
             for (int i = 1; i < dsBtn.length; i++) {
                 if (o.equals(dsBtn[i])) {

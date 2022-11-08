@@ -16,6 +16,7 @@ import entity.HoaDon;
 import entity.TaiKhoan;
 import service.ITaiKhoanService;
 import service.impl.HoaDonImp;
+import service.impl.NhanVienImp;
 import service.impl.TaiKhoanImpl;
 
 public class App {
@@ -35,10 +36,9 @@ public class App {
 //		String[] thoiGian = time.toString().split(":");
 //		String h = thoiGian[0]+thoiGian[1];
 //		System.out.println(h);
-	    KhachHangDao khdao = new KhachHangDao();
+	    NhanVienImp nhanVienImp = new NhanVienImp();
 	    
-	 
-            khdao.getAllKhachHang().forEach(e -> System.out.println(e));
+	    nhanVienImp.getAllNhanVien().forEach(e -> System.out.println(e));
         
 	}
 

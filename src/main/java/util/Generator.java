@@ -20,6 +20,10 @@ public class Generator {
 
         return maNV;
     }
+    
+    private String tuTaoMaSanPham() {
+        return "SP"+random3SoNguyen();
+    }
 
     public String tuTaoMaPhong(String loaiPhong) {
         String maPhong = "";

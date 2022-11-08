@@ -106,8 +106,8 @@ public class HoaDonDao {
                         rs.getString("maSP"),
                         rs.getString("tenSP"),
                         rs.getDouble("gia"),
-                        rs.getString("congThuc"),
-                        rs.getString("loai"));
+                        rs.getString("congThuc"));
+                       
                 List<CTHoaDon> dss = new ArrayList<CTHoaDon>();
                 CTHoaDon ctHoaDon = new CTHoaDon(rs.getInt("soLuong"), sanPham);
                 dss.add(ctHoaDon);
@@ -212,8 +212,7 @@ public class HoaDonDao {
                         rs.getString("maSP"),
                         rs.getString("tenSP"),
                         rs.getDouble("gia"),
-                        rs.getString("congThuc"),
-                        rs.getString("loai"));
+                        rs.getString("congThuc"));
                 List<CTHoaDon> dss = new ArrayList<CTHoaDon>();
                 CTHoaDon ctHoaDon = new CTHoaDon(rs.getInt("soLuong"), sanPham);
                 dss.add(ctHoaDon);

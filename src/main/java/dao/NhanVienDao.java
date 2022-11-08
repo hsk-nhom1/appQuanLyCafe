@@ -48,8 +48,92 @@ public class NhanVienDao {
         }
         return dS;
     }
-    
-    
+
+    /**
+     * thêm nhân viên
+     * 
+     * @param nv
+     * @return
+     * @throws SQLException
+     */
+    public boolean themNhanVien(NhanVien nv) {
+        DBConnection.getInstance();
+        Connection con = DBConnection.getConnection();
+        String sql = "insert into NhanVien values(?,?,?,?,?,?,?,?,?)";
+        int n = 0;
+        try {
+            PreparedStatement stmt = con.prepareStatement(sql);
+            stmt.setString(1, nv.getMaNV());
+            stmt.setString(2, nv.getTenNV());
+            stmt.setString(3, nv.getSdt());
+            stmt.setString(4, nv.getEmail());
+            stmt.setString(5, nv.getGioiTinh());
+            stmt.setString(6, nv.getCmnd());
+            stmt.setInt(7, nv.getCaTruc());
+            stmt.setString(8, nv.getDiaChi());
+            stmt.setDouble(9, nv.getLuong());
+            n = stmt.executeUpdate();
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
+        return n > 0;
+    }
+
+    /**
+     * sửa nhân viên
+     * 
+     * @param nv
+     * @return
+     * @throws SQLException
+     */
+    public boolean suaNhanVien(NhanVien nv) {
+        DBConnection.getInstance();
+        Connection con = DBConnection.getConnection();
+        String sql = "update NhanVien set tenNV = ?, sdt = ?, email = ?, gioiTinh = ?, cmnd = ?, caTruc = ?, diachi = ?,luong = ? where maNV = ?";
+        int n = 0;
+        try {
+            PreparedStatement stmt = con.prepareStatement(sql);
+            stmt.setString(1, nv.getTenNV());
+            stmt.setString(2, nv.getSdt());
+            stmt.setString(3, nv.getEmail());
+            stmt.setString(4, nv.getGioiTinh());
+            stmt.setString(5, nv.getCmnd());
+            stmt.setInt(6, nv.getCaTruc());
+            stmt.setString(7, nv.getDiaChi());
+            stmt.setDouble(8, nv.getLuong());
+            stmt.setString(9, nv.getMaNV());
+            n = stmt.executeUpdate();
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
+        return n > 0;
+    }
+
+    /**
+     * xóa nhân viên
+     * 
+     * @param ma
+     * @return
+     * @throws SQLException
+     */
+    public boolean xoaNhanVien(String ma) {
+        DBConnection.getInstance();
+        Connection con = DBConnection.getConnection();
+        int n = 0;
+        try {
+            String sqlnull = "update hoadon set manv = null where manv = ?";
+            PreparedStatement stmtnull = con.prepareStatement(sqlnull);
+            stmtnull.setString(1, ma);
+            stmtnull.execute();
+            String sql = "delete from NhanVien where maNV = ?";
+            PreparedStatement stmt = con.prepareStatement(sql);
+            stmt.setString(1, ma);
+            n = stmt.executeUpdate();
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
+        return n > 0;
+    }
 
     /**
      * close sql
