@@ -61,7 +61,7 @@ public class ManHinhChinh extends JFrame implements ActionListener, MouseListene
     private JPanel pnMenuJPanel;
     private JButton btnTrangChu, btnSanPham, btnThongKe, btnNhanVien, btnKhachHang, btnHoaDon, btnLogOut;
     private JLabel lblIconUser, lblIconLogOut, lblTenUser;
-    
+
     /**
      * private
      */
@@ -181,20 +181,10 @@ public class ManHinhChinh extends JFrame implements ActionListener, MouseListene
         bCenter1.add(cmbMaBan = new JComboBox<String>());
         bCenter1.add(Box.createHorizontalStrut(95));
 
-    
         for (Ban b : banImp.getDsBan()) {
             cmbMaBan.addItem(b.getMaBan());
         }
-        
-        cmbMaBan.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String maBans = cmbMaBan.getSelectedItem().toString().trim();
-                UpdataHoaDonBan(maBans);
-                btnTaoHoaDon.setEnabled(false);
-            }
-        });
-        
+
         bCenter1.add(lblNgay = new JLabel("Ngày: "));
         dateSettings = new DatePickerSettings();
         dateSettings.setAllowKeyboardEditing(false);
@@ -279,8 +269,6 @@ public class ManHinhChinh extends JFrame implements ActionListener, MouseListene
         bBtnChild2.add(btnTruOrd = new JButton("-"));
         bBtnChild2.add(Box.createHorizontalStrut(10));
         boxCenTer.add(Box.createVerticalStrut(10));
-        
-        
 
         if (txtSoLuongSPOrd.getText().equals("")) {
             txtSoLuongSPOrd.setText("0");
@@ -333,6 +321,21 @@ public class ManHinhChinh extends JFrame implements ActionListener, MouseListene
             }
         }
 
+        String maBans = cmbMaBan.getSelectedItem().toString().trim();
+        UpdataHoaDonBan(maBans);
+        btnTaoHoaDon.setEnabled(false);
+        /**
+         * KHI BẤM CHỌN BÀN
+         */
+        cmbMaBan.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String maBans = cmbMaBan.getSelectedItem().toString().trim();
+                UpdataHoaDonBan(maBans);
+                btnTaoHoaDon.setEnabled(false);
+            }
+        });
+
         cbmKhachHang.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -344,8 +347,8 @@ public class ManHinhChinh extends JFrame implements ActionListener, MouseListene
                 }
             }
         });
-        if(maBan == null) {
-        }else {
+        if (maBan == null) {
+        } else {
             for (HoaDon h : hoaDonImp.getAllHoaDon()) {
                 if (h.getBan().getMaBan().equals(maBan)) {
                     hdDao.updateTrangThaiHoaDon(h.getMaHD());
@@ -356,7 +359,7 @@ public class ManHinhChinh extends JFrame implements ActionListener, MouseListene
             }
             JOptionPane.showMessageDialog(this, "Thanh toán thành công");
         }
-        
+
     }
 
     /**
@@ -365,7 +368,7 @@ public class ManHinhChinh extends JFrame implements ActionListener, MouseListene
     private void UpdataCbmKhachHang() {
         cbmKhachHang.removeAll();
         for (KhachHang kh : khachHangImp.getDsKhachHang()) {
-           cbmKhachHang.addItem(kh.getTenKH());
+            cbmKhachHang.addItem(kh.getTenKH());
         }
         cbmKhachHang.updateUI();
     }
@@ -592,7 +595,7 @@ public class ManHinhChinh extends JFrame implements ActionListener, MouseListene
         pnMenuJPanel.add(lblTenUser);
         pnMenuJPanel.add(lblIconLogOut);
         pnMenuJPanel.add(btnLogOut);
-        
+
         btnKhachHang.addActionListener(this);
         btnTrangChu.addActionListener(this);
         btnSanPham.addActionListener(this);
@@ -631,15 +634,15 @@ public class ManHinhChinh extends JFrame implements ActionListener, MouseListene
         /**
          * Event button menu
          */
-        if(o.equals(btnKhachHang)) {
+        if (o.equals(btnKhachHang)) {
             new QuanLyKhachHang().setVisible(true);
             new ManHinhChinh(null).setVisible(false);
-        }else if(o.equals(btnTrangChu)) {
+        } else if (o.equals(btnTrangChu)) {
             new ManHinhChinh(null).setVisible(false);
-        }else if(o.equals(btnSanPham)) {
-           new ui.SanPham().setVisible(true);
+        } else if (o.equals(btnSanPham)) {
+            new ui.SanPham().setVisible(true);
         }
-        
+
         /**
          * Event button chức năng
          */
@@ -720,9 +723,9 @@ public class ManHinhChinh extends JFrame implements ActionListener, MouseListene
             }
         } else if (o.equals(btnThanhToan)) {
             String maBan = cmbMaBan.getSelectedItem().toString();
-            if(btnTaoHoaDon.isEnabled() == true) {
+            if (btnTaoHoaDon.isEnabled() == true) {
                 JOptionPane.showMessageDialog(this, "Hóa đơn chưa được cập nhật");
-            }else {
+            } else {
                 OpenUiThanhToan(maBan);
             }
         } else {
@@ -753,7 +756,7 @@ public class ManHinhChinh extends JFrame implements ActionListener, MouseListene
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(ThanhToan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
+        // </editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -781,7 +784,6 @@ public class ManHinhChinh extends JFrame implements ActionListener, MouseListene
                     cthd.setSanPham(sp);
                     cthd.setSoLuong(Integer.parseInt(tableModelOrder.getValueAt(i, 2).toString()));
                     hoaDonImp.themCTHoaDon(cthd);
-                    System.out.println(sp);
                 }
             }
         }
@@ -856,7 +858,6 @@ public class ManHinhChinh extends JFrame implements ActionListener, MouseListene
                     cthd.setHoaDon(hoaDon);
                     cthd.setSoLuong(Integer.parseInt(tableModelOrder.getValueAt(i, 2).toString()));
                     hoaDonImp.themCTHoaDon(cthd);
-                    System.out.println(sp);
                 }
             }
         }
@@ -886,9 +887,12 @@ public class ManHinhChinh extends JFrame implements ActionListener, MouseListene
             String value = values[0].trim() + values[1].trim();
             tongTien += Double.parseDouble(value);
         }
-        System.out.println(tongTien);
         lblTongTienLabel.setText(en.format(tongTien) + " VND");
     }
+
+    /**
+     * Khi thêm sản phẩm mà sản phẩm đã có trong dánh sách order
+     */
 
     /**
      * chuyển sản phẩm từ Ds sản phẩm sang table order khi order sản phẩm
@@ -902,14 +906,38 @@ public class ManHinhChinh extends JFrame implements ActionListener, MouseListene
         String[] parse = tableModelSP.getValueAt(index, 2).toString().trim().split(",");
         String value = parse[0] + parse[1];
 
+        String tenSPOR = txtTenSPPnRight.getText().trim();
         double gia = Double.parseDouble(value);
         int sl = Integer.parseInt(cmbSLOrd.getSelectedItem().toString());
 
-        String[] row = { tableModelSP.getValueAt(index, 1).toString(),
-                tableModelSP.getValueAt(index, 2).toString().trim(),
-                String.valueOf(cmbSLOrd.getSelectedItem().toString()), en.format(sl * gia) };
+        int indexs = tableOrder.getRowCount();
+        boolean check = true;
+        if (indexs > 0) {
+            for (int i = 0; i < indexs; i++) {
+                String tenSP = tableModelOrder.getValueAt(i, 0).toString().trim();
+                if (tenSPOR.equals(tenSP)) {
+                    tableModelOrder.setValueAt(sl+1, i, 2);
+                    tableModelOrder.setValueAt(en.format((sl+1)*gia), i, 3);
+                    check = true;
+                    break;
+                } else {
+                    check = false;
+                }
+            }
+        } else {
+            String[] row = { tenSPOR,
+                    tableModelSP.getValueAt(index, 2).toString().trim(),
+                    String.valueOf(cmbSLOrd.getSelectedItem().toString()), en.format(sl * gia) };
+            tableModelOrder.addRow(row);
+        }
 
-        tableModelOrder.addRow(row);
+        if(check == false) {
+            String[] row = { tenSPOR,
+                    tableModelSP.getValueAt(index, 2).toString().trim(),
+                    String.valueOf(cmbSLOrd.getSelectedItem().toString()), en.format(sl * gia) };
+            tableModelOrder.addRow(row);
+        }
+        
         tableOrder.setModel(tableModelOrder);
         tableOrder.updateUI();
 
@@ -936,7 +964,6 @@ public class ManHinhChinh extends JFrame implements ActionListener, MouseListene
                 makh = kh.getMaKH();
         }
 
-        System.out.println(txtNgay.getDate());
         return new Generator().tuTaoMaHoaDon(maBan, makh, txtNgay.getDate());
     }
 
@@ -962,7 +989,6 @@ public class ManHinhChinh extends JFrame implements ActionListener, MouseListene
      */
     private void selectKhachHangBySDT() {
         String sdt = txtSDT.getText();
-        System.out.println(sdt);
     }
 
     @Override

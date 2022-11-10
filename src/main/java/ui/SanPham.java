@@ -410,6 +410,7 @@ public class SanPham extends javax.swing.JFrame implements ActionListener {
         btnRefesh.setIcon(new ImageIcon(
                 new ImageIcon("public/icon/refresh.png").getImage().getScaledInstance(20, 20,
                         Image.SCALE_SMOOTH)));
+        
         btnRefesh.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ds = sanPhamImp.getDsSP();
