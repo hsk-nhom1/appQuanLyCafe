@@ -40,6 +40,7 @@ import javax.swing.JTable;
 import javax.swing.UIManager;
 import javax.swing.JTextField;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.Icon;
 
 public class QuanLyKhachHang extends JFrame implements ActionListener, MouseListener{
     private JPanel pnMain;
@@ -49,7 +50,6 @@ public class QuanLyKhachHang extends JFrame implements ActionListener, MouseList
     
     private DefaultTableModel model;
     private String[] HEADER =  {"Mã khách hàng", "Tên khách hàng", "Số điện thoại", "Giới tính"};
-    private JComboBox comboBoxTim;
     private JButton btnThem;
     private JButton btnSua;
     private JButton btnXoa;
@@ -63,6 +63,8 @@ public class QuanLyKhachHang extends JFrame implements ActionListener, MouseList
     private JButton btnXoaRong;
     private JComboBox comboBoxGioiTInh;
     private IKhachHangService serviceKH;
+    private JTextField textTim;
+    private JButton btnTim;
 
     public QuanLyKhachHang(){
         try {
@@ -165,7 +167,7 @@ public class QuanLyKhachHang extends JFrame implements ActionListener, MouseList
         btnLogOut.setBounds(890, 50, 100, 30);
         btnLogOut.setForeground(Color.WHITE);
 
-       add(pnMenuJPanel);
+       getContentPane().add(pnMenuJPanel);
         pnMenuJPanel.add(btnTrangChu);
         pnMenuJPanel.add(btnSanPham);
         pnMenuJPanel.add(btnThongKe);
@@ -200,16 +202,11 @@ public class QuanLyKhachHang extends JFrame implements ActionListener, MouseList
         pnMain.add(panel);
         panel.setLayout(null);
         
-        comboBoxTim = new JComboBox();
-        comboBoxTim.setModel(new DefaultComboBoxModel(new String[] {"Tất cả", "nam", "nữ"}));
-        comboBoxTim.setBounds(28, 10, 149, 33);
-        panel.add(comboBoxTim);
-        
         btnThem = new JButton("Thêm");
         btnThem.setForeground(Color.BLACK);
         btnThem.setBackground(Color.GREEN);
         btnThem.setFont(new Font("Tahoma", Font.PLAIN, 20));
-        btnThem.setBounds(200, 10, 127, 33);
+        btnThem.setBounds(259, 10, 127, 33);
         panel.add(btnThem);
         
         btnSua = new JButton("Sửa");
@@ -220,7 +217,7 @@ public class QuanLyKhachHang extends JFrame implements ActionListener, MouseList
         btnSua.setForeground(Color.BLACK);
         btnSua.setFont(new Font("Tahoma", Font.PLAIN, 20));
         btnSua.setBackground(Color.YELLOW);
-        btnSua.setBounds(350, 10, 127, 33);
+        btnSua.setBounds(408, 10, 127, 33);
         panel.add(btnSua);
         
         btnXoa = new JButton("Xóa");
@@ -231,15 +228,33 @@ public class QuanLyKhachHang extends JFrame implements ActionListener, MouseList
         btnXoa.setForeground(Color.BLACK);
         btnXoa.setFont(new Font("Tahoma", Font.PLAIN, 20));
         btnXoa.setBackground(Color.PINK);
-        btnXoa.setBounds(490, 10, 127, 33);
+        btnXoa.setBounds(560, 10, 127, 33);
         panel.add(btnXoa);
         
         btnXoaRong = new JButton("Xóa rỗng");
         btnXoaRong.setForeground(Color.BLACK);
         btnXoaRong.setFont(new Font("Tahoma", Font.PLAIN, 20));
         btnXoaRong.setBackground(new Color(192, 192, 192));
-        btnXoaRong.setBounds(636, 10, 164, 33);
+        btnXoaRong.setBounds(710, 10, 149, 33);
         panel.add(btnXoaRong);
+        
+        textTim = new JTextField();
+        textTim.setBounds(55, 10, 142, 33);
+        panel.add(textTim);
+        textTim.setColumns(10);
+        
+        JLabel lblNewLabel = new JLabel("Tên:");
+        lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 18));
+        lblNewLabel.setBounds(10, 17, 45, 27);
+        panel.add(lblNewLabel);
+        
+        btnTim = new JButton("");
+        btnTim.setIcon(new ImageIcon(
+                new ImageIcon("public/icon/search.png").getImage().getScaledInstance(20, 20,
+                        Image.SCALE_SMOOTH)));
+        
+        btnTim.setBounds(207, 10, 35, 33);
+        panel.add(btnTim);
         
         table = new JTable() {
             @Override
@@ -338,15 +353,12 @@ public class QuanLyKhachHang extends JFrame implements ActionListener, MouseList
         textDiaChi.setColumns(10);
         textDiaChi.setBounds(393, 302, 277, 30);
         pnMain.add(textDiaChi);
-        
-        
-        comboBoxTim.addActionListener(this);
         btnThem.addActionListener(this);
         btnSua.addActionListener(this);
         btnXoa.addActionListener(this);
         btnXoaRong.addActionListener(this);
         table.addMouseListener(this);
-        
+        btnTim.addActionListener(this);
     }
     
      
@@ -399,12 +411,10 @@ public class QuanLyKhachHang extends JFrame implements ActionListener, MouseList
         /**
          * Event button chức năng
          */
-        if(obj.equals(comboBoxTim)) {
-            String gioiTinh = (String) comboBoxTim.getSelectedItem();
-            if(gioiTinh.equals("Tất cả"))
-                gioiTinh = "";
+        if(obj.equals(btnTim)) {
+            String ten = textTim.getText();
             List<KhachHang> ds = new ArrayList<KhachHang>();
-            ds = serviceKH.timKiem("","","","",gioiTinh,"");
+            ds = serviceKH.timKiem("",ten,"","","","");
             updateTable(ds);
         }
         if(obj.equals(btnXoa)) {

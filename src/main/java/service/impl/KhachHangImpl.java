@@ -68,8 +68,9 @@ public class KhachHangImpl implements IKhachHangService {
             ds.add(timMa(ma));
             return ds;
         }
+        String regex = ".*" + ten.toLowerCase() + ".*";
         for (KhachHang kh : getDsKhachHang()) {
-            if ((kh.getTenKH().equalsIgnoreCase(ten) || ten == null || ten.equals("")) &&
+            if ((kh.getTenKH().toLowerCase().matches(regex) || ten == null || ten.equals("")) &&
                     (kh.getSdt().equalsIgnoreCase(sdt) || sdt == null || sdt.equals("")) &&
                     (kh.getEmail().equalsIgnoreCase(email) || email == null || email.equals("")) &&
                     (kh.getGioiTinh().equalsIgnoreCase(gioiTinh) || gioiTinh == null || gioiTinh.equals("")) &&

@@ -4,6 +4,8 @@
  */
 package ui;
 
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -11,6 +13,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Locale;
 
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
@@ -27,7 +30,7 @@ import service.impl.SanPhamImp;
  *
  * @author Le Quoc Phong
  */
-public class ThanhToan extends javax.swing.JFrame {
+public class ThanhToan extends javax.swing.JFrame implements KeyListener{
     private String maBans;
     private DefaultTableModel tableModel;
     private SanPhamImp spimp = new SanPhamImp();
@@ -211,7 +214,7 @@ public class ThanhToan extends javax.swing.JFrame {
                 new ManHinhChinh(null).setVisible(true);
             }
         });
-
+        txtTienInput.addKeyListener(this);
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -497,4 +500,33 @@ public class ThanhToan extends javax.swing.JFrame {
     private javax.swing.JTextField txtTienOutput;
     private javax.swing.JLabel txtTongTienPhaiTra;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        Object obj = e.getSource();
+        if(obj.equals(txtTienInput)) {
+            txtTienOutput.setEditable(false);
+            String tien = txtTongTienPhaiTra.getText();
+            tien = tien.replace(",", "");
+            tien = tien.replace(" VND", "");
+            double tongTien = Double.parseDouble(tien);
+            double tienNhan = 0.0;
+            try {
+                tienNhan = Double.parseDouble(txtTienInput.getText());
+            } catch (Exception e2) {
+                JOptionPane.showMessageDialog(jScrollPane1, "so tien thanh toan phai la so");
+                txtTienInput.setText("");
+                txtTienOutput.setText("");
+            }
+            txtTienOutput.setText(String.format("%.0f", tienNhan - tongTien));
+        }
+    }
 }

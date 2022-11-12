@@ -15,9 +15,9 @@ public class DBConnection {
     }
 	
 	public void connect() throws SQLException{
-        String url = "jdbc:sqlserver://localhost:1433;databaseName=QuanLyCafe";
+        String url = "jdbc:sqlserver://localhost:1433;databaseName=QuanLyCafe;trustServerCertificate=true";
         String user = "sa";
-        String password = "123456";
+        String password = "12";
         con = DriverManager.getConnection(url, user, password);
         if (con != null) {
             System.out.println("Kết nối thành công");
