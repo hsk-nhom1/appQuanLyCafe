@@ -38,7 +38,7 @@ public class Menu extends JFrame {
 		pnMenuJPanel = new JPanel();
 		pnMenuJPanel.setLayout(null);
 		pnMenuJPanel.setBounds(0, 0, 1050, 100);
-		pnMenuJPanel.setBackground(Color.decode("#1D81CE"));
+//		pnMenuJPanel.setBackground(Color.decode("#1D81CE"));
 		 
 		
 		btnTrangChu = new JButton("Trang chủ");
@@ -47,7 +47,9 @@ public class Menu extends JFrame {
 		btnTrangChu.setIcon(new ImageIcon(
 		        new ImageIcon("public/icon/home.png").getImage().getScaledInstance(30, 30,
 		                Image.SCALE_SMOOTH)));
-		btnTrangChu.setBorder(new RoundedBorderWithColor(Color.decode("#1D81CE"), 1, 10));					
+//		btnTrangChu.setBorder(new RoundedBorderWithColor(Color.decode("#1D81CE"), 1, 10));					
+//		btnTrangChu.setBackground(Color.decode("#1D81CE"));
+		
 		
 		btnSanPham = new JButton("Sản phẩm");
 		btnSanPham.setHorizontalAlignment(JButton.CENTER);
@@ -55,7 +57,7 @@ public class Menu extends JFrame {
 		btnSanPham.setIcon(new ImageIcon(
 		        new ImageIcon("public/icon/product.png").getImage().getScaledInstance(30, 30,
 		                Image.SCALE_SMOOTH)));
-		btnSanPham.setBorder(new RoundedBorderWithColor(Color.decode("#1D81CE"), 1, 10));				
+//		btnSanPham.setBorder(new RoundedBorderWithColor(Color.decode("#1D81CE"), 1, 10));				
 
 		btnQLBan = new JButton("Quản lý bàn");
 		btnQLBan.setHorizontalAlignment(JButton.CENTER);
@@ -128,6 +130,29 @@ public class Menu extends JFrame {
 	
 	 
 	public static void main(String[] args) {
-		new Menu().setVisible(true);
+	    try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(Menu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(Menu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(Menu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(Menu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        // </editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new Menu().setVisible(true);
+            }
+        });
 	}
 }

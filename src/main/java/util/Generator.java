@@ -6,23 +6,23 @@ import java.time.LocalTime;
 import java.util.Date;
 import java.util.Random;
 
-
 public class Generator {
-    public String tuTaoMaNV(String loaiNV, String namSinh) {
-        String[] arrDate = namSinh.split("/");
+    public String tuTaoMaNV() {
 
-        String year = arrDate[2].substring(2);
+        String maNV = "NV";
+        maNV += random3SoNguyen();
+        return maNV;
+    }
 
-        String maNV = "";
-        maNV += loaiNV;
-        maNV += year;
+    public String tuTaoMaKH() {
+        String maNV = "KH";
         maNV += random3SoNguyen();
 
         return maNV;
     }
-    
+
     private String tuTaoMaSanPham() {
-        return "SP"+random3SoNguyen();
+        return "SP" + random3SoNguyen();
     }
 
     public String tuTaoMaPhong(String loaiPhong) {
@@ -35,18 +35,18 @@ public class Generator {
     public String tuTaoMaHoaDon(String maBan, String maKH, LocalDate ngayLapHD) {
 
         String[] day = ngayLapHD.toString().split("-");
-        String ngayLapHDs= day[0]+day[1]+day[2];
-        
+        String ngayLapHDs = day[0] + day[1] + day[2];
+
         LocalTime time = LocalTime.now();
-        
+
         String[] thoiGian = time.toString().split(":");
-        String h = thoiGian[0]+thoiGian[1];
+        String h = thoiGian[0] + thoiGian[1];
 
         String maHD = "";
         maHD += ngayLapHDs;
         maHD += h;
         maHD += maKH;
-        maHD+= maBan;
+        maHD += maBan;
         return maHD;
     }
 
