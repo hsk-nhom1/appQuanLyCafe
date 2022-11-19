@@ -611,6 +611,7 @@ public class ManHinhChinh extends JFrame implements ActionListener, MouseListene
         btnNhanVien.addActionListener(this);
         btnThongKe.addActionListener(this);
         btnHoaDon.addActionListener(this);
+        btnLogOut.addActionListener(this);
     }
 
 //    public static void main(String[] args) {
@@ -660,6 +661,12 @@ public class ManHinhChinh extends JFrame implements ActionListener, MouseListene
         }else if(o.equals(btnThongKe)) {
             new ThongKeDoanhThu(maNVTK).setVisible(true);
             this.dispose();
+        }else if(o.equals(btnHoaDon)) {
+            new QuanLyHoaDon(maNVTK).setVisible(true);
+            dispose();
+        }else if(o.equals(btnLogOut)) {
+            new DangNhap().setVisible(true);
+            dispose();
         }
 
         /**
@@ -746,7 +753,7 @@ public class ManHinhChinh extends JFrame implements ActionListener, MouseListene
                 JOptionPane.showMessageDialog(this, "Hóa đơn chưa được cập nhật");
             } else {
                 OpenUiThanhToan(maBan);
-                this.dispose();
+                dispose();
             }
         } else {
             for (int i = 1; i < dsBtn.length; i++) {
@@ -781,7 +788,7 @@ public class ManHinhChinh extends JFrame implements ActionListener, MouseListene
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ThanhToan(maBan).setVisible(true);
+                new ThanhToan(maBan,maNVTK).setVisible(true);
             }
         });
 

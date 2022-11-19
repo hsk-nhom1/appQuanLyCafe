@@ -18,6 +18,9 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.border.SoftBevelBorder;
 import javax.swing.table.DefaultTableModel;
+import javax.xml.stream.XMLOutputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 
 import db.DBConnection;
 import entity.CTHoaDon;
@@ -36,6 +39,8 @@ import javax.swing.JComboBox;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -68,6 +73,8 @@ public class ThongKeDoanhThu extends JFrame implements ActionListener {
     private static String maNVTK = "";
 
     private NhanVienImp nhanVienImp = new NhanVienImp();
+    private JButton btnXuatFile;
+    private ArrayList<HoaDon> dshd;
 
     public ThongKeDoanhThu(String maNV) {
         maNVTK=maNV;
@@ -195,6 +202,7 @@ public class ThongKeDoanhThu extends JFrame implements ActionListener {
         btnThongKe.addActionListener(this);
         btnHoaDon.addActionListener(this);
         btnNhanVien.addActionListener(this);
+        btnLogOut.addActionListener(this);
 
         JLabel lblTitle = new JLabel("Thống kê doanh thu");
         lblTitle.setBorder(new LineBorder(new Color(255, 200, 0), 10, true));
@@ -294,8 +302,6 @@ public class ThongKeDoanhThu extends JFrame implements ActionListener {
         model = new DefaultTableModel(HEADER, 0);
         table.setModel(model);
         serviceHD = new HoaDonImp();
-        List<HoaDon> ds = serviceHD.getAllHoaDon();
-        updateTable(ds);
 
         JScrollPane scrollPane = new JScrollPane(table);
         scrollPane.setBounds(85, 241, 869, 354);
@@ -313,10 +319,16 @@ public class ThongKeDoanhThu extends JFrame implements ActionListener {
         lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 30));
         lblNewLabel_1.setBounds(110, 606, 234, 47);
         pnMain.add(lblNewLabel_1);
+        
+        btnXuatFile = new JButton("Xuất File");
+        btnXuatFile.setFont(new Font("Tahoma", Font.PLAIN, 18));
+        btnXuatFile.setBackground(new Color(192, 192, 192));
+        btnXuatFile.setBounds(687, 618, 142, 33);
+        pnMain.add(btnXuatFile);
 
         btnThongKeDoanhThu.addActionListener(this);
         comboBoxLoai.addActionListener(this);
-
+        btnXuatFile.addActionListener(this);
     }
 
     private void updateTable(List<HoaDon> ds) {
@@ -384,6 +396,12 @@ public class ThongKeDoanhThu extends JFrame implements ActionListener {
         }else if(o.equals(btnThongKe)) {
             new ThongKeDoanhThu(maNVTK).setVisible(true);
             this.dispose();
+        }else if(o.equals(btnHoaDon)) {
+            new QuanLyHoaDon(maNVTK).setVisible(true);
+            dispose();
+        }else if(o.equals(btnLogOut)) {
+            new DangNhap().setVisible(true);
+            dispose();
         }
 
         /**
@@ -403,7 +421,7 @@ public class ThongKeDoanhThu extends JFrame implements ActionListener {
                 int ngay = Integer.parseInt(comboBoxNgay.getSelectedItem().toString());
                 int thang = Integer.parseInt(comboBoxThang.getSelectedItem().toString());
                 int nam = Integer.parseInt(comboBoxNam.getSelectedItem().toString());
-                List<HoaDon> dshd = new ArrayList<HoaDon>();
+                dshd = new ArrayList<HoaDon>();
                 for (HoaDon hd : serviceHD.getAllHoaDon()) {
                     if (hd.getNgayLapHD().getDayOfMonth() == ngay && hd.getNgayLapHD().getMonthValue() == thang
                             && hd.getNgayLapHD().getYear() == nam) {
@@ -420,7 +438,7 @@ public class ThongKeDoanhThu extends JFrame implements ActionListener {
             } else {
                 int thang = Integer.parseInt(comboBoxThang.getSelectedItem().toString());
                 int nam = Integer.parseInt(comboBoxNam.getSelectedItem().toString());
-                List<HoaDon> dshd = new ArrayList<HoaDon>();
+                dshd = new ArrayList<HoaDon>();
                 for (HoaDon hd : serviceHD.getAllHoaDon()) {
                     if (hd.getNgayLapHD().getMonthValue() == thang && hd.getNgayLapHD().getYear() == nam) {
                         dshd.add(hd);
@@ -432,6 +450,47 @@ public class ThongKeDoanhThu extends JFrame implements ActionListener {
                     tongDoanhThu += (double) table.getValueAt(i, 5);
                 }
                 textFieldDoanhThu.setText(String.format("%.0f", tongDoanhThu));
+            }
+        }
+        if(o.equals(btnXuatFile)) {
+            if(dshd!=null) {
+                XMLOutputFactory factory = XMLOutputFactory.newInstance();
+                try {
+                    XMLStreamWriter out = factory.createXMLStreamWriter(new FileWriter("xml/HoaDon.xml"));
+                    out.writeStartDocument();
+                    out.writeCharacters("\n");
+                    out.writeStartElement("ListHoaDon");
+                    for(HoaDon hd: dshd) {
+                        out.writeStartElement("HoaDon");
+                            out.writeAttribute("maHD", hd.getMaHD());
+                            out.writeStartElement("NgayLapHD");
+                                out.writeCharacters(String.valueOf(hd.getNgayLapHD()));
+                            out.writeEndElement();
+                            out.writeStartElement("NhanVien");
+                                out.writeCharacters(hd.getNhanVien().getTenNV());
+                            out.writeEndElement();
+                            out.writeStartElement("KhachHang");
+                                out.writeCharacters(hd.getKhachHang().getTenKH());
+                            out.writeEndElement();
+                            double tongTien = 0;
+                            for(CTHoaDon cthd: hd.getDsCTHD()) {
+                                tongTien += cthd.getSanPham().getGia() * cthd.getSoLuong();
+                            }
+                            out.writeStartElement("ThanhTien");
+                                out.writeCharacters(String.valueOf(tongTien));
+                            out.writeEndElement();
+                        out.writeEndElement();
+                    }
+                    out.writeEndElement();
+                    out.close();
+                    JOptionPane.showMessageDialog(pnMain, "xuất file xml thành công");
+                } catch (XMLStreamException e1) {
+                    e1.printStackTrace();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }else {
+                JOptionPane.showMessageDialog(pnMain, "không có gì để xuất file");
             }
         }
     }

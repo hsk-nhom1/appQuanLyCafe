@@ -84,7 +84,8 @@ public class QuanLyNhanVien extends javax.swing.JFrame implements ActionListener
     }
 
     private boolean validData() {
-        String ten = new Generator().tuTaoMaNV();
+        String ma = new Generator().tuTaoMaNV();
+        String ten = txtTenNV.getText().trim();
         String sdt = txtSDT.getText().trim();
         String email = txtEmail.getText().trim();
         String gioiTinh = (String) cbmGioiTinh.getSelectedItem();
@@ -246,24 +247,26 @@ public class QuanLyNhanVien extends javax.swing.JFrame implements ActionListener
         btnThem.setText("Thêm");
         btnThem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                String ma = new Generator().tuTaoMaNV();
-                String ten = txtTenNV.getText().trim();
-                String sdt = txtSDT.getText().trim();
-                String email = txtEmail.getText().trim();
-                String gioiTinh = (String) cbmGioiTinh.getSelectedItem();
-                String cmnd = txtCMND.getText().trim();
-                String diaChi = txtDiaChi.getText().trim();
-                int caTruc = Integer.parseInt(cbmCaTruc.getSelectedItem().toString());
-                double luong = Double.parseDouble(txtLuong.getText().trim());
-                NhanVien nv = new NhanVien(ma, ten, sdt, email, gioiTinh, cmnd, caTruc, diaChi, luong);
-                if (serviceNV.themNhanVien(nv)) {
-                    XoaRong();
-                    updateTable(serviceNV.getAllNhanVien());
-                    showMessage("thêm nhân viên thành công");
+                if(validData()) {
+                    String ma = new Generator().tuTaoMaNV();
+                    String ten = txtTenNV.getText().trim();
+                    String sdt = txtSDT.getText().trim();
+                    String email = txtEmail.getText().trim();
+                    String gioiTinh = (String) cbmGioiTinh.getSelectedItem();
+                    String cmnd = txtCMND.getText().trim();
+                    String diaChi = txtDiaChi.getText().trim();
+                    int caTruc = Integer.parseInt(cbmCaTruc.getSelectedItem().toString());
+                    double luong = Double.parseDouble(txtLuong.getText().trim());
+                    NhanVien nv = new NhanVien(ma, ten, sdt, email, gioiTinh, cmnd, caTruc, diaChi, luong);
+                    if (serviceNV.themNhanVien(nv)) {
+                        XoaRong();
+                        updateTable(serviceNV.getAllNhanVien());
+                        showMessage("thêm nhân viên thành công");
+                    }
+                    
+                    else
+                        showMessage("trùng mã nhân viên");
                 }
-
-                else
-                    showMessage("trùng mã nhân viên");
             }
         });
 
@@ -278,22 +281,24 @@ public class QuanLyNhanVien extends javax.swing.JFrame implements ActionListener
         btnSua.setText("Sửa");
         btnSua.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                String ma = txtMaNV.getText().trim();
-                String ten = txtTenNV.getText().trim();
-                String sdt = txtSDT.getText().trim();
-                String email = txtEmail.getText().trim();
-                String gioiTinh = (String) cbmGioiTinh.getSelectedItem();
-                String cmnd = txtCMND.getText().trim();
-                String diaChi = txtDiaChi.getText().trim();
-                int caTruc = Integer.parseInt(cbmCaTruc.getSelectedItem().toString());
-                double luong = Double.parseDouble(txtLuong.getText().trim());
-                NhanVien nv = new NhanVien(ma, ten, sdt, email, gioiTinh, cmnd, caTruc, diaChi, luong);
-                if (serviceNV.suaNhanVien(nv)) {
-                    showMessage("đã cập nhập thông tin");
-                    XoaRong();
-                    updateTable(serviceNV.getAllNhanVien());
-                } else
-                    showMessage("cập nhập thông tin thất bại");
+                if(validData() == true) {
+                    String ma = txtMaNV.getText().trim();
+                    String ten = txtTenNV.getText().trim();
+                    String sdt = txtSDT.getText().trim();
+                    String email = txtEmail.getText().trim();
+                    String gioiTinh = (String) cbmGioiTinh.getSelectedItem();
+                    String cmnd = txtCMND.getText().trim();
+                    String diaChi = txtDiaChi.getText().trim();
+                    int caTruc = Integer.parseInt(cbmCaTruc.getSelectedItem().toString());
+                    double luong = Double.parseDouble(txtLuong.getText().trim());
+                    NhanVien nv = new NhanVien(ma, ten, sdt, email, gioiTinh, cmnd, caTruc, diaChi, luong);
+                    if (serviceNV.suaNhanVien(nv)) {
+                        showMessage("đã cập nhập thông tin");
+                        XoaRong();
+                        updateTable(serviceNV.getAllNhanVien());
+                    } else
+                        showMessage("cập nhập thông tin thất bại");
+                }
 
             }
         });
@@ -825,6 +830,7 @@ public class QuanLyNhanVien extends javax.swing.JFrame implements ActionListener
         btnThongKe.addActionListener(this);
         btnHoaDon.addActionListener(this);
         btnNhanVien.addActionListener(this);
+        btnLogOut.addActionListener(this);
     }
 
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {
@@ -940,6 +946,12 @@ public class QuanLyNhanVien extends javax.swing.JFrame implements ActionListener
         }else if(o.equals(btnThongKe)) {
             new ThongKeDoanhThu(maNVTK).setVisible(true);
             this.dispose();
+        }else if(o.equals(btnHoaDon)) {
+            new QuanLyHoaDon(maNVTK).setVisible(true);
+            dispose();
+        }else if(o.equals(btnLogOut)) {
+            new DangNhap().setVisible(true);
+            dispose();
         }
 
     }

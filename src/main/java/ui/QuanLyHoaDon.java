@@ -149,6 +149,7 @@ public class QuanLyHoaDon extends javax.swing.JFrame implements ActionListener {
         btnNhanVien.addActionListener(this);
         btnThongKe.addActionListener(this);
         btnHoaDon.addActionListener(this);
+        btnLogOut.addActionListener(this);
     }
 
     /**
@@ -395,6 +396,12 @@ public class QuanLyHoaDon extends javax.swing.JFrame implements ActionListener {
         }else if(o.equals(btnThongKe)) {
             new ThongKeDoanhThu(maNVTK).setVisible(true);
             this.dispose();
+        }else if(o.equals(btnHoaDon)) {
+            new QuanLyHoaDon(maNVTK).setVisible(true);
+            dispose();
+        }else if(o.equals(btnLogOut)) {
+            new DangNhap().setVisible(true);
+            dispose();
         }
 
     }

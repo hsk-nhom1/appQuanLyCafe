@@ -39,16 +39,19 @@ public class ThanhToan extends javax.swing.JFrame implements KeyListener{
     private BanImp banImp = new BanImp();
     private NhanVienImp nhanVienImp = new NhanVienImp();
     private HoaDonDao hdDao = new HoaDonDao();
+    private String maNVTK = "";
 
     /**
      * Creates new form ThanhToan
      */
-    public ThanhToan(String maBan) {
+    public ThanhToan(String maBan, String maNVTK) {
         setSize(770, 600);
         setLocationRelativeTo(null);
         setResizable(false);
         setTitle("Thanh toán hóa đơn bàn " + maBan);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         maBans = maBan;
+        this.maNVTK = maNVTK;
         initComponents();
         UpdataHoaDon(maBans);
     }
@@ -145,7 +148,7 @@ public class ThanhToan extends javax.swing.JFrame implements KeyListener{
 
         jLabel2.setText("jLabel2");
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        
 
         lblNgay.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblNgay.setText("Ngày 2/11/2022");
@@ -201,9 +204,17 @@ public class ThanhToan extends javax.swing.JFrame implements KeyListener{
         btnThanhToan.setText("Thanh toán");
         btnThanhToan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                new ManHinhChinh(maBans,null).setVisible(true);
-                
-                new ThanhToan(maBans).dispose();
+                if(txtTienInput.getText().equals("") || txtTienInput.getText() == null) {
+                    JOptionPane.showMessageDialog(jLabel2, "Hãy nhập số tiền nhận");
+                }else {
+                    double tienThua = Double.parseDouble(txtTienOutput.getText());
+                    if(tienThua>=0) {
+                        new ManHinhChinh(maBans,maNVTK).setVisible(true);
+                        dispose();
+                    }else {
+                        JOptionPane.showMessageDialog(jLabel2, "Không đủ tiền thanh toán");
+                    }
+                }
             }
         });
 
@@ -211,7 +222,7 @@ public class ThanhToan extends javax.swing.JFrame implements KeyListener{
         btnCencel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 setVisible(false);
-                new ManHinhChinh(null,null).setVisible(true);
+                new ManHinhChinh(null,maNVTK).setVisible(true);
             }
         });
         txtTienInput.addKeyListener(this);
@@ -463,11 +474,11 @@ public class ThanhToan extends javax.swing.JFrame implements KeyListener{
         // </editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new ThanhToan(null).setVisible(true);
-            }
-        });
+//        java.awt.EventQueue.invokeLater(new Runnable() {
+//            public void run() {
+//                new ThanhToan(null).setVisible(true);
+//            }
+//        });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

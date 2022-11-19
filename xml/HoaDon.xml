@@ -1,0 +1,105 @@
+<?xml version="1.0" ?>
+<ListHoaDon>
+	<HoaDon maHD="20221102-0737-KH01B08">
+		<NgayLapHD>2022-11-02</NgayLapHD>
+		<NhanVien>Pham Ha Nam</NhanVien>
+		<KhachHang>Le Quoc Phong</KhachHang>
+		<ThanhTien>150000.0</ThanhTien>
+	</HoaDon>
+	<HoaDon maHD="202211060009KH01B08">
+		<NgayLapHD>2022-11-06</NgayLapHD>
+		<NhanVien>Pham Ha Nam</NhanVien>
+		<KhachHang>Le Quoc Phong</KhachHang>
+		<ThanhTien>25000.0</ThanhTien>
+	</HoaDon>
+	<HoaDon maHD="202211060012KH01B07">
+		<NgayLapHD>2022-11-06</NgayLapHD>
+		<NhanVien>Pham Ha Nam</NhanVien>
+		<KhachHang>Le Quoc Phong</KhachHang>
+		<ThanhTien>475000.0</ThanhTien>
+	</HoaDon>
+	<HoaDon maHD="202211060017KH01B04">
+		<NgayLapHD>2022-11-06</NgayLapHD>
+		<NhanVien>Pham Ha Nam</NhanVien>
+		<KhachHang>Le Quoc Phong</KhachHang>
+		<ThanhTien>100000.0</ThanhTien>
+	</HoaDon>
+	<HoaDon maHD="202211060022KH01B08">
+		<NgayLapHD>2022-11-06</NgayLapHD>
+		<NhanVien>Pham Ha Nam</NhanVien>
+		<KhachHang>Le Quoc Phong</KhachHang>
+		<ThanhTien>350000.0</ThanhTien>
+	</HoaDon>
+	<HoaDon maHD="202211060024KH01B07">
+		<NgayLapHD>2022-11-06</NgayLapHD>
+		<NhanVien>Pham Ha Nam</NhanVien>
+		<KhachHang>Le Quoc Phong</KhachHang>
+		<ThanhTien>150000.0</ThanhTien>
+	</HoaDon>
+	<HoaDon maHD="202211060026KH01B01">
+		<NgayLapHD>2022-11-06</NgayLapHD>
+		<NhanVien>Pham Ha Nam</NhanVien>
+		<KhachHang>Le Quoc Phong</KhachHang>
+		<ThanhTien>125000.0</ThanhTien>
+	</HoaDon>
+	<HoaDon maHD="202211060210KH01B01">
+		<NgayLapHD>2022-11-06</NgayLapHD>
+		<NhanVien>Pham Ha Nam</NhanVien>
+		<KhachHang>Le Quoc Phong</KhachHang>
+		<ThanhTien>25000.0</ThanhTien>
+	</HoaDon>
+	<HoaDon maHD="20221102-0737-KH01B08">
+		<NgayLapHD>2022-11-02</NgayLapHD>
+		<NhanVien>Pham Ha Nam</NhanVien>
+		<KhachHang>Le Quoc Phong</KhachHang>
+		<ThanhTien>150000.0</ThanhTien>
+	</HoaDon>
+	<HoaDon maHD="202211082049KH01B08">
+		<NgayLapHD>2022-11-08</NgayLapHD>
+		<NhanVien>Pham Ha Nam</NhanVien>
+		<KhachHang>Le Quoc Phong</KhachHang>
+		<ThanhTien>60000.0</ThanhTien>
+	</HoaDon>
+	<HoaDon maHD="20221102-0737-KH01B08">
+		<NgayLapHD>2022-11-02</NgayLapHD>
+		<NhanVien>Pham Ha Nam</NhanVien>
+		<KhachHang>Le Quoc Phong</KhachHang>
+		<ThanhTien>140000.0</ThanhTien>
+	</HoaDon>
+	<HoaDon maHD="202211060017KH01B07">
+		<NgayLapHD>2022-11-06</NgayLapHD>
+		<NhanVien>Pham Ha Nam</NhanVien>
+		<KhachHang>Le Quoc Phong</KhachHang>
+		<ThanhTien>105000.0</ThanhTien>
+	</HoaDon>
+	<HoaDon maHD="202211080707KH01B11">
+		<NgayLapHD>2022-11-08</NgayLapHD>
+		<NhanVien>Pham Ha Nam</NhanVien>
+		<KhachHang>Le Quoc Phong</KhachHang>
+		<ThanhTien>140000.0</ThanhTien>
+	</HoaDon>
+	<HoaDon maHD="202211080100KH01B01">
+		<NgayLapHD>2022-11-08</NgayLapHD>
+		<NhanVien>Pham Ha Nam</NhanVien>
+		<KhachHang>Le Quoc Phong</KhachHang>
+		<ThanhTien>50000.0</ThanhTien>
+	</HoaDon>
+	<HoaDon maHD="202211172052KH01B01">
+		<NgayLapHD>2022-11-17</NgayLapHD>
+		<NhanVien>Pham Ha Nam</NhanVien>
+		<KhachHang>Le Quoc Phong</KhachHang>
+		<ThanhTien>100000.0</ThanhTien>
+	</HoaDon>
+	<HoaDon maHD="202211080100KH01B01">
+		<NgayLapHD>2022-11-08</NgayLapHD>
+		<NhanVien>Pham Ha Nam</NhanVien>
+		<KhachHang>Le Quoc Phong</KhachHang>
+		<ThanhTien>17000.0</ThanhTien>
+	</HoaDon>
+	<HoaDon maHD="202211082049KH01B08">
+		<NgayLapHD>2022-11-08</NgayLapHD>
+		<NhanVien>Pham Ha Nam</NhanVien>
+		<KhachHang>Le Quoc Phong</KhachHang>
+		<ThanhTien>17000.0</ThanhTien>
+	</HoaDon>
+</ListHoaDon>
