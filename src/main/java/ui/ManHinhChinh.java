@@ -62,6 +62,7 @@ public class ManHinhChinh extends JFrame implements ActionListener, MouseListene
     private JButton btnTrangChu, btnSanPham, btnThongKe, btnNhanVien, btnKhachHang, btnHoaDon, btnLogOut;
     private JLabel lblIconUser, lblIconLogOut, lblTenUser;
 
+    private int n = 0;
     /**
      * private
      */
@@ -87,8 +88,10 @@ public class ManHinhChinh extends JFrame implements ActionListener, MouseListene
     private BanImp banImp = new BanImp();
     private NhanVienImp nhanVienImp = new NhanVienImp();
     private HoaDonDao hdDao = new HoaDonDao();
+    private String maNVTK = "";
 
-    public ManHinhChinh(String maBan) {
+    public ManHinhChinh(String maBan, String maNV) {
+        maNVTK = maNV;
         try {
             DBConnection.getInstance().connect();
         } catch (Exception e) {
@@ -103,7 +106,7 @@ public class ManHinhChinh extends JFrame implements ActionListener, MouseListene
         setResizable(false);
 
         MainUI();
-        PnMenu();
+        PnMenu(maNV);
         PnLeft();
         PnCenter(maBan);
         PnRight();
@@ -509,7 +512,7 @@ public class ManHinhChinh extends JFrame implements ActionListener, MouseListene
 
     }
 
-    public void PnMenu() {
+    public void PnMenu(String maNV) {
         pnMenuJPanel = new JPanel();
         pnMenuJPanel.setLayout(null);
         pnMenuJPanel.setBounds(0, 0, 1050, 100);
@@ -569,7 +572,13 @@ public class ManHinhChinh extends JFrame implements ActionListener, MouseListene
                 new ImageIcon("public/icon/user.png").getImage().getScaledInstance(30, 30,
                         Image.SCALE_SMOOTH)));
 
-        lblTenUser = new JLabel("Pham Ha Nam");
+        lblTenUser = new JLabel("");
+        for (NhanVien nv : nhanVienImp.getAllNhanVien()) {
+            if (nv.getMaNV().equals(maNVTK)) {
+                lblTenUser.setText(nv.getTenNV());
+            }
+        }
+
         lblTenUser.setBounds(900, 10, 100, 30);
         lblTenUser.setForeground(Color.WHITE);
 
@@ -599,34 +608,37 @@ public class ManHinhChinh extends JFrame implements ActionListener, MouseListene
         btnKhachHang.addActionListener(this);
         btnTrangChu.addActionListener(this);
         btnSanPham.addActionListener(this);
+        btnNhanVien.addActionListener(this);
+        btnThongKe.addActionListener(this);
+        btnHoaDon.addActionListener(this);
     }
 
-    public static void main(String[] args) {
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ThanhToan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ThanhToan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ThanhToan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ThanhToan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        // </editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new ManHinhChinh(null).setVisible(true);
-            }
-        });
-    }
+//    public static void main(String[] args) {
+//        try {
+//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+//                if ("Nimbus".equals(info.getName())) {
+//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+//                    break;
+//                }
+//            }
+//        } catch (ClassNotFoundException ex) {
+//            java.util.logging.Logger.getLogger(ThanhToan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (InstantiationException ex) {
+//            java.util.logging.Logger.getLogger(ThanhToan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (IllegalAccessException ex) {
+//            java.util.logging.Logger.getLogger(ThanhToan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+//            java.util.logging.Logger.getLogger(ThanhToan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        }
+//        // </editor-fold>
+//
+//        /* Create and display the form */
+//        java.awt.EventQueue.invokeLater(new Runnable() {
+//            public void run() {
+//                new ManHinhChinh(null, null).setVisible(true);
+//            }
+//        });
+//    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -635,12 +647,19 @@ public class ManHinhChinh extends JFrame implements ActionListener, MouseListene
          * Event button menu
          */
         if (o.equals(btnKhachHang)) {
-            new QuanLyKhachHang().setVisible(true);
-            new ManHinhChinh(null).setVisible(false);
+            new QuanLyKhachHang(maNVTK).setVisible(true);
+            this.dispose();
         } else if (o.equals(btnTrangChu)) {
-            new ManHinhChinh(null).setVisible(false);
+            new ManHinhChinh(null, maNVTK).setVisible(true);
         } else if (o.equals(btnSanPham)) {
-            new ui.SanPham().setVisible(true);
+            new ui.SanPham(maNVTK).setVisible(true);
+            this.dispose();
+        }else if(o.equals(btnNhanVien)) {
+            new QuanLyNhanVien(maNVTK).setVisible(true);
+            this.dispose();
+        }else if(o.equals(btnThongKe)) {
+            new ThongKeDoanhThu(maNVTK).setVisible(true);
+            this.dispose();
         }
 
         /**
@@ -727,6 +746,7 @@ public class ManHinhChinh extends JFrame implements ActionListener, MouseListene
                 JOptionPane.showMessageDialog(this, "Hóa đơn chưa được cập nhật");
             } else {
                 OpenUiThanhToan(maBan);
+                this.dispose();
             }
         } else {
             for (int i = 1; i < dsBtn.length; i++) {
@@ -916,8 +936,8 @@ public class ManHinhChinh extends JFrame implements ActionListener, MouseListene
             for (int i = 0; i < indexs; i++) {
                 String tenSP = tableModelOrder.getValueAt(i, 0).toString().trim();
                 if (tenSPOR.equals(tenSP)) {
-                    tableModelOrder.setValueAt(sl+1, i, 2);
-                    tableModelOrder.setValueAt(en.format((sl+1)*gia), i, 3);
+                    tableModelOrder.setValueAt(sl + 1, i, 2);
+                    tableModelOrder.setValueAt(en.format((sl + 1) * gia), i, 3);
                     check = true;
                     break;
                 } else {
@@ -931,13 +951,13 @@ public class ManHinhChinh extends JFrame implements ActionListener, MouseListene
             tableModelOrder.addRow(row);
         }
 
-        if(check == false) {
+        if (check == false) {
             String[] row = { tenSPOR,
                     tableModelSP.getValueAt(index, 2).toString().trim(),
                     String.valueOf(cmbSLOrd.getSelectedItem().toString()), en.format(sl * gia) };
             tableModelOrder.addRow(row);
         }
-        
+
         tableOrder.setModel(tableModelOrder);
         tableOrder.updateUI();
 

@@ -8,49 +8,42 @@ import dao.TaiKhoanDao;
 import entity.TaiKhoan;
 import service.ITaiKhoanService;
 
-public class TaiKhoanImpl implements ITaiKhoanService{
-	
-	private TaiKhoanDao taiKhoanDao;
-	public TaiKhoanImpl(Connection con) {
-		taiKhoanDao = new TaiKhoanDao(con);
-	}
+public class TaiKhoanImpl implements ITaiKhoanService {
 
-	public boolean themTaiKhoan(TaiKhoan tk) throws SQLException {
-		List<TaiKhoan> ds = taiKhoanDao.getDsTaiKhoan();
-		if(ds.contains(tk)) {
-			return false;
-		}
-		taiKhoanDao.themTaiKhoan(tk);
-		return true;
-	}
+    private TaiKhoanDao taiKhoanDao = new TaiKhoanDao();
 
-	public List<TaiKhoan> getDsTaiKhoan() throws SQLException {
-		return taiKhoanDao.getDsTaiKhoan();
-	}
+    public boolean themTaiKhoan(TaiKhoan tk) {
+        List<TaiKhoan> ds = taiKhoanDao.getDsTaiKhoan();
+        if (ds.contains(tk)) {
+            return false;
+        }
+        taiKhoanDao.themTaiKhoan(tk);
+        return true;
+    }
 
-	public boolean suaTaiKhoan(String maTK, TaiKhoan tk) throws SQLException{
-		if(timTaiKhoan(maTK) == null)
-			return false;
-		taiKhoanDao.suaTaiKhoan(maTK, tk);
-		return true;
-	}
+    public List<TaiKhoan> getDsTaiKhoan() {
+        return taiKhoanDao.getDsTaiKhoan();
+    }
 
-	public TaiKhoan timTaiKhoan(String maTK) throws SQLException {
-		List<TaiKhoan> ds= getDsTaiKhoan();
-		TaiKhoan tk = ds.stream()
-				.filter(o -> o.getUserName().equals(maTK))
-				.findAny()
-				.orElse(null);
-		return tk;
-	}
+    public boolean suaTaiKhoan(String maTK, TaiKhoan tk) {
+        if (timTaiKhoan(maTK) == null)
+            return false;
+        taiKhoanDao.suaTaiKhoan(maTK, tk);
+        return true;
+    }
 
-	@Override
-	public boolean xoaTaiKhoan(String maTK) throws SQLException {
-		if(timTaiKhoan(maTK) == null) {
-			return false;
-		}
-		taiKhoanDao.xoaTaiKhoan(maTK);
-		return true;
-	}
+    public TaiKhoan timTaiKhoan(String maTK) {
+        TaiKhoan tk = taiKhoanDao.timTaiKhoan(maTK);
+        return tk;
+    }
+
+    @Override
+    public boolean xoaTaiKhoan(String maTK) {
+        if (timTaiKhoan(maTK) == null) {
+            return false;
+        }
+        taiKhoanDao.xoaTaiKhoan(maTK);
+        return true;
+    }
 
 }

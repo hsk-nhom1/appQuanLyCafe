@@ -31,6 +31,8 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 import db.DBConnection;
+import entity.NhanVien;
+import service.impl.NhanVienImp;
 import service.impl.SanPhamImp;
 import util.RoundedBorderWithColor;
 import util.Generator;
@@ -50,11 +52,16 @@ public class SanPham extends javax.swing.JFrame implements ActionListener {
     private SanPhamImp sanPhamImp = new SanPhamImp();
 
     private List<entity.SanPham> ds = new ArrayList<entity.SanPham>();
+    
+    private static String maNVTK="";
+    
+    private NhanVienImp nhanVienImp = new NhanVienImp();
 
     /**
      * Creates new form SanPham
      */
-    public SanPham() {
+    public SanPham(String maNV) {
+        maNVTK=maNV;
         try {
             DBConnection.getInstance().connect();
         } catch (SQLException e) {
@@ -627,7 +634,12 @@ public class SanPham extends javax.swing.JFrame implements ActionListener {
                 new ImageIcon("public/icon/user.png").getImage().getScaledInstance(30, 30,
                         Image.SCALE_SMOOTH)));
 
-        lblTenUser = new JLabel("Pham Ha Nam");
+        lblTenUser = new JLabel("");
+        for (NhanVien nv : nhanVienImp.getAllNhanVien()) {
+            if(nv.getMaNV().equals(maNVTK)) {
+                lblTenUser.setText(nv.getTenNV());
+            }
+        }
         lblTenUser.setBounds(900, 10, 100, 30);
         lblTenUser.setForeground(Color.WHITE);
 
@@ -654,12 +666,12 @@ public class SanPham extends javax.swing.JFrame implements ActionListener {
         pnMenuJPanel.add(lblIconLogOut);
         pnMenuJPanel.add(btnLogOut);
 
+        btnKhachHang.addActionListener(this);
         btnTrangChu.addActionListener(this);
         btnSanPham.addActionListener(this);
-        btnKhachHang.addActionListener(this);
+        btnNhanVien.addActionListener(this);
         btnThongKe.addActionListener(this);
         btnHoaDon.addActionListener(this);
-        btnNhanVien.addActionListener(this);
     }
 
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {
@@ -704,7 +716,13 @@ public class SanPham extends javax.swing.JFrame implements ActionListener {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new SanPham().setVisible(true);
+                if(maNVTK.equals("")) {
+                    new DangNhap().setVisible(true);
+                    new SanPham(null).dispose();
+                }else {
+                    new SanPham(maNVTK).setVisible(true);
+                }
+               
             }
         });
     }
@@ -743,15 +761,22 @@ public class SanPham extends javax.swing.JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         Object o = e.getSource();
         /**
-         * event menu
+         * Event button menu
          */
-        if (o.equals(btnTrangChu)) {
-            new ManHinhChinh(null).setVisible(true);
-            new SanPham().setVisible(false);
+        if (o.equals(btnKhachHang)) {
+            new QuanLyKhachHang(maNVTK).setVisible(true);
+            this.dispose();
+        } else if (o.equals(btnTrangChu)) {
+            new ManHinhChinh(null, maNVTK).setVisible(true);
+        } else if (o.equals(btnSanPham)) {
+            new ui.SanPham(maNVTK).setVisible(true);
+            this.dispose();
+        }else if(o.equals(btnNhanVien)) {
+            new QuanLyNhanVien(maNVTK).setVisible(true);
+            this.dispose();
+        }else if(o.equals(btnThongKe)) {
+            new ThongKeDoanhThu(maNVTK).setVisible(true);
+            this.dispose();
         }
-
-        /**
-         * event chức năng
-         */
     }
 }

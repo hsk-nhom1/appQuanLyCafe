@@ -201,9 +201,9 @@ public class ThanhToan extends javax.swing.JFrame implements KeyListener{
         btnThanhToan.setText("Thanh toán");
         btnThanhToan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                new ManHinhChinh(maBans);
-                setVisible(false);
-                new ManHinhChinh(null).setVisible(true);
+                new ManHinhChinh(maBans,null).setVisible(true);
+                
+                new ThanhToan(maBans).dispose();
             }
         });
 
@@ -211,7 +211,7 @@ public class ThanhToan extends javax.swing.JFrame implements KeyListener{
         btnCencel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 setVisible(false);
-                new ManHinhChinh(null).setVisible(true);
+                new ManHinhChinh(null,null).setVisible(true);
             }
         });
         txtTienInput.addKeyListener(this);

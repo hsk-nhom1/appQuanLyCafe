@@ -43,11 +43,13 @@ public class QuanLyNhanVien extends javax.swing.JFrame implements ActionListener
     private JButton btnTrangChu, btnSanPham, btnThongKe, btnNhanVien, btnKhachHang, btnHoaDon, btnLogOut;
     private JLabel lblIconUser, lblIconLogOut, lblTenUser;
     private NhanVienImp serviceNV = new NhanVienImp();
+    private static String maNVTK = "";
 
     /**
      * Creates new form QuanLyNhanVien
      */
-    public QuanLyNhanVien() {
+    public QuanLyNhanVien(String maNV) {
+        maNVTK = maNV;
         try {
             DBConnection.getInstance().connect();
         } catch (SQLException e) {
@@ -137,11 +139,13 @@ public class QuanLyNhanVien extends javax.swing.JFrame implements ActionListener
         cbmGioiTinh.setSelectedIndex(0);
         txtTenNV.requestFocus();
     }
+
     private String removeAccent(String s) {
         String temp = Normalizer.normalize(s, Normalizer.Form.NFD);
         Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
         return pattern.matcher(temp).replaceAll("");
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -257,7 +261,7 @@ public class QuanLyNhanVien extends javax.swing.JFrame implements ActionListener
                     updateTable(serviceNV.getAllNhanVien());
                     showMessage("thêm nhân viên thành công");
                 }
-                   
+
                 else
                     showMessage("trùng mã nhân viên");
             }
@@ -319,7 +323,7 @@ public class QuanLyNhanVien extends javax.swing.JFrame implements ActionListener
                 }
             }
         });
-        
+
         jComboBox1.setModel(
                 new javax.swing.DefaultComboBoxModel<>(new String[] { "Tất cả", "Theo tên", "Theo giới tính" }));
         jComboBox1.addActionListener(new java.awt.event.ActionListener() {
@@ -336,9 +340,9 @@ public class QuanLyNhanVien extends javax.swing.JFrame implements ActionListener
                         }
                     });
                     updateTable(ds);
-                }else if(jComboBox1.getSelectedIndex() == 0) {
+                } else if (jComboBox1.getSelectedIndex() == 0) {
                     updateTable(serviceNV.getAllNhanVien());
-                }else if(jComboBox1.getSelectedIndex() == 2) {
+                } else if (jComboBox1.getSelectedIndex() == 2) {
                     ds = serviceNV.getAllNhanVien();
                     Collections.sort(ds, new Comparator<NhanVien>() {
 
@@ -394,9 +398,9 @@ public class QuanLyNhanVien extends javax.swing.JFrame implements ActionListener
         btnTim.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 String[] arrten = removeAccent(txtTim.getText().trim().toLowerCase()).split(" ");
-                
-                List<NhanVien> ds  = new ArrayList();
-                
+
+                List<NhanVien> ds = new ArrayList();
+
                 for (NhanVien sp : serviceNV.getAllNhanVien()) {
                     for (int i = 0; i < arrten.length; i++) {
                         if (removeAccent(sp.getTenNV()).toLowerCase().contains(arrten[i])) {
@@ -404,10 +408,10 @@ public class QuanLyNhanVien extends javax.swing.JFrame implements ActionListener
                         }
                     }
                 }
-                if(ds.size() > 0) {
+                if (ds.size() > 0) {
                     updateTable(ds);
                     txtTim.setText("");
-                }else {
+                } else {
                     JOptionPane.showMessageDialog(btnTim, "Không tìm thấy sản phẩm");
                     txtTim.setText("");
                 }
@@ -783,7 +787,12 @@ public class QuanLyNhanVien extends javax.swing.JFrame implements ActionListener
                 new ImageIcon("public/icon/user.png").getImage().getScaledInstance(30, 30,
                         Image.SCALE_SMOOTH)));
 
-        lblTenUser = new JLabel("Pham Ha Nam");
+        lblTenUser = new JLabel("");
+        for (NhanVien nv : serviceNV.getAllNhanVien()) {
+            if (nv.getMaNV().equals(maNVTK)) {
+                lblTenUser.setText(nv.getTenNV());
+            }
+        }
         lblTenUser.setBounds(900, 10, 100, 30);
         lblTenUser.setForeground(Color.WHITE);
 
@@ -864,7 +873,12 @@ public class QuanLyNhanVien extends javax.swing.JFrame implements ActionListener
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new QuanLyNhanVien().setVisible(true);
+                if (maNVTK.equals("")) {
+                    new DangNhap().setVisible(true);
+                    new QuanLyNhanVien(null).dispose();
+                } else {
+                    new QuanLyNhanVien(maNVTK).setVisible(true);
+                }
             }
         });
     }
@@ -908,7 +922,25 @@ public class QuanLyNhanVien extends javax.swing.JFrame implements ActionListener
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        // TODO Auto-generated method stub
+        Object o = e.getSource();
+        /**
+         * Event button menu
+         */
+        if (o.equals(btnKhachHang)) {
+            new QuanLyKhachHang(maNVTK).setVisible(true);
+            this.dispose();
+        } else if (o.equals(btnTrangChu)) {
+            new ManHinhChinh(null, maNVTK).setVisible(true);
+        } else if (o.equals(btnSanPham)) {
+            new ui.SanPham(maNVTK).setVisible(true);
+            this.dispose();
+        }else if(o.equals(btnNhanVien)) {
+            new QuanLyNhanVien(maNVTK).setVisible(true);
+            this.dispose();
+        }else if(o.equals(btnThongKe)) {
+            new ThongKeDoanhThu(maNVTK).setVisible(true);
+            this.dispose();
+        }
 
     }
 }

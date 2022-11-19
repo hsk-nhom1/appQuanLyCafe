@@ -24,8 +24,10 @@ import javax.swing.table.DefaultTableModel;
 
 import db.DBConnection;
 import entity.KhachHang;
+import entity.NhanVien;
 import service.IKhachHangService;
 import service.impl.KhachHangImpl;
+import service.impl.NhanVienImp;
 import util.Generator;
 import util.RoundedBorderWithColor;
 
@@ -40,11 +42,16 @@ public class QuanLyKhachHang extends javax.swing.JFrame implements ActionListene
     private JLabel lblIconUser, lblIconLogOut, lblTenUser;
 
     private IKhachHangService serviceKH = new KhachHangImpl();
+    
+    private static String maNVTK = "";
+
+    private NhanVienImp nhanVienImp = new NhanVienImp();
 
     /**
      * Creates new form KhachHang
      */
-    public QuanLyKhachHang() {
+    public QuanLyKhachHang(String maNV) {
+        maNVTK = maNV;
         try {
             DBConnection.getInstance().connect();
         } catch (SQLException e) {
@@ -662,7 +669,12 @@ public class QuanLyKhachHang extends javax.swing.JFrame implements ActionListene
                 new ImageIcon("public/icon/user.png").getImage().getScaledInstance(30, 30,
                         Image.SCALE_SMOOTH)));
 
-        lblTenUser = new JLabel("Pham Ha Nam");
+        lblTenUser = new JLabel("");
+        for (NhanVien nv : nhanVienImp.getAllNhanVien()) {
+            if(nv.getMaNV().equals(maNVTK)) {
+                lblTenUser.setText(nv.getTenNV());
+            }
+        }
         lblTenUser.setBounds(900, 10, 100, 30);
         lblTenUser.setForeground(Color.WHITE);
 
@@ -747,7 +759,12 @@ public class QuanLyKhachHang extends javax.swing.JFrame implements ActionListene
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new QuanLyKhachHang().setVisible(true);
+                if(maNVTK.equals("")) {
+                    new DangNhap().setVisible(true);
+                    new QuanLyKhachHang(null).dispose();
+                }else {
+                    new QuanLyKhachHang(maNVTK).setVisible(true);
+                }
             }
         });
     }
@@ -785,7 +802,25 @@ public class QuanLyKhachHang extends javax.swing.JFrame implements ActionListene
     // End of variables declaration
     @Override
     public void actionPerformed(ActionEvent e) {
-        // TODO Auto-generated method stub
+        Object o = e.getSource();
+        /**
+         * Event button menu
+         */
+        if (o.equals(btnKhachHang)) {
+            new QuanLyKhachHang(maNVTK).setVisible(true);
+            this.dispose();
+        } else if (o.equals(btnTrangChu)) {
+            new ManHinhChinh(null, maNVTK).setVisible(true);
+        } else if (o.equals(btnSanPham)) {
+            new ui.SanPham(maNVTK).setVisible(true);
+            this.dispose();
+        }else if(o.equals(btnNhanVien)) {
+            new QuanLyNhanVien(maNVTK).setVisible(true);
+            this.dispose();
+        }else if(o.equals(btnThongKe)) {
+            new ThongKeDoanhThu(maNVTK).setVisible(true);
+            this.dispose();
+        }
 
     }
 }
